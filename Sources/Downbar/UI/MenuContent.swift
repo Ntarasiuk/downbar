@@ -15,7 +15,7 @@ struct MenuContent: View {
             Divider()
             footer
         }
-        .frame(width: 308)
+        .frame(width: 360)
     }
 
     // MARK: - Header
@@ -82,7 +82,7 @@ struct MenuContent: View {
             }
             .padding(6)
         }
-        .frame(maxHeight: 360)
+        .frame(maxHeight: 480)
     }
 
     /// Services with an active issue (minor/major/critical) sorted worst-first,

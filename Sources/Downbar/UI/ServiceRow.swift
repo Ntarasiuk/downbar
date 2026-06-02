@@ -29,7 +29,7 @@ struct ServiceRow: View {
                     Text(description)
                         .font(.system(size: 11))
                         .foregroundStyle(.secondary)
-                        .lineLimit(2)
+                        .lineLimit(1)
                 }
 
                 Spacer(minLength: 8)
@@ -37,18 +37,22 @@ struct ServiceRow: View {
                 Sparkline(samples: history)
                     .accessibilityHidden(true)
 
-                if hovering {
-                    Image(systemName: "arrow.up.forward.app")
-                        .font(.system(size: 11, weight: .semibold))
-                        .foregroundStyle(.tertiary)
-                        .accessibilityHidden(true)
-                } else {
+                // Fixed-width trailing slot that cross-fades age ↔ open-affordance
+                // on hover. Crucially it never changes size, so hovering (which
+                // fires constantly while scrolling) can't reflow the row.
+                ZStack(alignment: .trailing) {
                     Text(ageText)
                         .font(.system(size: 10))
                         .monospacedDigit()
                         .foregroundStyle(.tertiary)
-                        .accessibilityHidden(true)
+                        .opacity(hovering ? 0 : 1)
+                    Image(systemName: "arrow.up.forward.app")
+                        .font(.system(size: 11, weight: .semibold))
+                        .foregroundStyle(.tertiary)
+                        .opacity(hovering ? 1 : 0)
                 }
+                .frame(width: 38, alignment: .trailing)
+                .accessibilityHidden(true)
             }
             .padding(.horizontal, 8)
             .padding(.vertical, 6)
