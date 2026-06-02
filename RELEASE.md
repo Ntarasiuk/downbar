@@ -9,6 +9,12 @@ directly — so we generate a thin Xcode project around the same sources with
 
 ## One-time setup
 
+- **Apple account:** enrolled with Apple ID `ntarasiuk@gmail.com` — **Individual**
+  enrollment ($99/yr). Note: this Apple ID permanently owns the developer account
+  and apps (migrating to another Apple ID later requires an Apple support ticket),
+  and Apple mandates two-factor auth on it. Individual enrollment displays the
+  developer's **legal name** publicly on the listing (the email is never shown);
+  switch to Organization enrollment only if a business name must appear instead.
 - Apple Developer Program membership (paid).
 - Xcode installed and signed in with your Apple ID (Xcode > Settings > Accounts).
 - XcodeGen:
