@@ -40,6 +40,27 @@ final class ProviderFixtureTests: XCTestCase {
         XCTAssertEqual(r.incidentTitle, "Elevated API error rates")
     }
 
+    func testStatuspageMaintenanceIsMinorAndFlagged() async {
+        // Statuspage's `maintenance` indicator maps to `.minor` (planned work,
+        // not an outage) but must set `isMaintenance` so the row reads calmly.
+        MockURLProtocol.respond("""
+        { "status": { "indicator": "maintenance", "description": "Scheduled Maintenance" } }
+        """)
+        let provider = StatuspageProvider(session: MockURLProtocol.makeSession())
+        let r = await provider.fetch(service("https://status.example.com", .statuspage))
+        XCTAssertEqual(r.indicator, .minor)
+        XCTAssertTrue(r.isMaintenance)
+    }
+
+    func testStatuspageNonMaintenanceIsNotFlagged() async {
+        MockURLProtocol.respond("""
+        { "status": { "indicator": "minor", "description": "Degraded Performance" } }
+        """)
+        let provider = StatuspageProvider(session: MockURLProtocol.makeSession())
+        let r = await provider.fetch(service("https://status.example.com", .statuspage))
+        XCTAssertFalse(r.isMaintenance)
+    }
+
     func testStatuspageMajorIndicator() async {
         MockURLProtocol.respond("""
         { "status": { "indicator": "major", "description": "Partial Outage" } }

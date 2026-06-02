@@ -39,10 +39,15 @@ struct StatuspageProvider: StatusProvider {
                 return unknown(service, "HTTP \(code)")
             }
             let payload = try JSONDecoder().decode(Payload.self, from: data)
+            // Statuspage reports an active maintenance window via the
+            // `maintenance` indicator (mapped to `.minor`); flag it so the row
+            // reads as planned work rather than an outage.
+            let isMaintenance = payload.status.indicator.lowercased() == "maintenance"
             return result(service,
                           Indicator(statuspageIndicator: payload.status.indicator),
                           payload.status.description,
-                          incidentTitle: Self.activeIncidentName(payload.incidents))
+                          incidentTitle: Self.activeIncidentName(payload.incidents),
+                          isMaintenance: isMaintenance)
         } catch {
             return unknown(service, error.localizedDescription)
         }

@@ -7,6 +7,22 @@ through Xcode / App Store Connect, which an SPM executable target can't produce
 directly — so we generate a thin Xcode project around the same sources with
 [XcodeGen](https://github.com/yonaskolb/XcodeGen).
 
+## ✅ You're enrolled — do these 3 things when the account goes active
+
+Apple Developer enrollment (`ntarasiuk@gmail.com`, Individual) was registered
+2026-06-02. Activation can take minutes to ~48h; you'll get an email. The moment
+it's active:
+
+1. **Sign the Paid Apps Agreement** — App Store Connect → Business → Agreements;
+   complete banking + tax forms. *This is the long pole — it can block a paid app
+   from going live even after approval, so do it first.*
+2. **Create the app record** — App Store Connect → Apps → +: name "Downbar",
+   bundle id `com.nathantarasiuk.downbar`, price **Tier 3 ($2.99)**.
+3. **Add the account to Xcode** — Settings → Accounts → `ntarasiuk@gmail.com`,
+   then set your Team on the Downbar target before archiving.
+
+Then follow "Archive & upload" + "App Store Connect checklist" below.
+
 ## One-time setup
 
 - **Apple account:** enrolled with Apple ID `ntarasiuk@gmail.com` — **Individual**

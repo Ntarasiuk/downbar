@@ -98,12 +98,53 @@ enum AWSRegionFilter {
         set { UserDefaults.standard.set(Array(newValue).sorted(), forKey: key) }
     }
 
-    /// Common regions offered in Settings.
-    static let common: [String] = [
-        "us-east-1", "us-east-2", "us-west-1", "us-west-2",
-        "ca-central-1", "sa-east-1",
-        "eu-west-1", "eu-west-2", "eu-west-3", "eu-central-1", "eu-north-1",
-        "ap-south-1", "ap-southeast-1", "ap-southeast-2",
-        "ap-northeast-1", "ap-northeast-2",
+    /// A selectable AWS region: code plus a human label.
+    struct Region: Hashable {
+        let code: String
+        let name: String
+    }
+
+    /// A geographic grouping of regions, for the Settings picker.
+    struct Group: Hashable {
+        let title: String
+        let regions: [Region]
+    }
+
+    /// Regions offered in Settings, grouped by geography.
+    static let groups: [Group] = [
+        Group(title: "Americas", regions: [
+            Region(code: "us-east-1", name: "N. Virginia"),
+            Region(code: "us-east-2", name: "Ohio"),
+            Region(code: "us-west-1", name: "N. California"),
+            Region(code: "us-west-2", name: "Oregon"),
+            Region(code: "ca-central-1", name: "Canada"),
+            Region(code: "sa-east-1", name: "São Paulo"),
+        ]),
+        Group(title: "Europe", regions: [
+            Region(code: "eu-west-1", name: "Ireland"),
+            Region(code: "eu-west-2", name: "London"),
+            Region(code: "eu-west-3", name: "Paris"),
+            Region(code: "eu-central-1", name: "Frankfurt"),
+            Region(code: "eu-central-2", name: "Zurich"),
+            Region(code: "eu-north-1", name: "Stockholm"),
+            Region(code: "eu-south-1", name: "Milan"),
+        ]),
+        Group(title: "Asia Pacific", regions: [
+            Region(code: "ap-south-1", name: "Mumbai"),
+            Region(code: "ap-southeast-1", name: "Singapore"),
+            Region(code: "ap-southeast-2", name: "Sydney"),
+            Region(code: "ap-northeast-1", name: "Tokyo"),
+            Region(code: "ap-northeast-2", name: "Seoul"),
+            Region(code: "ap-northeast-3", name: "Osaka"),
+            Region(code: "ap-east-1", name: "Hong Kong"),
+        ]),
+        Group(title: "Middle East & Africa", regions: [
+            Region(code: "me-central-1", name: "UAE"),
+            Region(code: "me-south-1", name: "Bahrain"),
+            Region(code: "af-south-1", name: "Cape Town"),
+        ]),
     ]
+
+    /// Flat list of every selectable region code.
+    static let common: [String] = groups.flatMap { $0.regions.map(\.code) }
 }

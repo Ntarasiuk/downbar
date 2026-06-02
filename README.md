@@ -4,7 +4,7 @@ A tiny macOS menu-bar app that watches the status pages you care about and tells
 you the moment something breaks — before your users do.
 
 Downbar lives in the menu bar as a small **health meter**. Pick the services you
-depend on from a curated catalog of ~95 across 12 categories (or paste any status
+depend on from a curated catalog of 110+ across 12 categories (or paste any status
 page URL), and Downbar polls them quietly in the background. When something goes
 down or recovers, you get a native notification. No dashboard to keep open, no
 account to create, no data leaving your Mac except the checks themselves.
@@ -14,7 +14,7 @@ account to create, no data leaving your Mac except the checks themselves.
 - **Menu-bar health meter** — a colored bar-meter icon shows the worst status
   across everything you monitor at a glance: green (operational), yellow
   (degraded), orange (partial outage), red (major outage), gray (unreachable).
-- **~95 curated services, 12 categories** — Developer Tools, Cloud & Infra,
+- **110+ curated services, 12 categories** — Developer Tools, Cloud & Infra,
   Data & Backend, Communication, Productivity, Observability & APM, Payments,
   Hosting, Identity & Auth, AI APIs, and more. Pick per-service or "Select all"
   per category.

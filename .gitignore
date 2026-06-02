@@ -7,6 +7,7 @@ Package.resolved
 Downbar.app/
 *.xcodeproj/
 *.xcworkspace/
+.xcbuild/
 
 # Generated icon intermediates (regenerate via scripts/make-icon.sh)
 Resources/*.iconset/

@@ -9,7 +9,10 @@ let package = Package(
     targets: [
         .executableTarget(
             name: "Downbar",
-            path: "Sources/Downbar"
+            path: "Sources/Downbar",
+            resources: [
+                .process("Resources/Localizable.xcstrings")
+            ]
         ),
         .testTarget(
             name: "DownbarTests",

@@ -29,13 +29,26 @@ targets:
     deploymentTarget: "14.0"
     sources:
       - path: Sources/Downbar
+      # AppIcon.icns is referenced via the Info.plist CFBundleIconFile and
+      # copied into the bundle (no asset catalog needed for a single .icns).
+      # Declared as a source with an explicit resources build phase — a target
+      # `resources:` key is silently ignored by XcodeGen here.
+      - path: Resources/AppIcon.icns
+        buildPhase: resources
+    # XcodeGen rewrites the file it's pointed at, so it gets a dedicated copy
+    # (Info-Xcode.plist) rather than clobbering Resources/Info.plist, which
+    # scripts/build-app.sh copies verbatim into the SPM-built bundle.
     info:
-      path: Resources/Info.plist
+      path: Resources/Info-Xcode.plist
+      # GENERATE_INFOPLIST_FILE is NO, so INFOPLIST_KEY_* build settings are
+      # ignored — the agent-app flag and icon reference must live in the plist
+      # itself. These mirror Resources/Info.plist (the build-app.sh bundle).
+      properties:
+        LSUIElement: true
+        CFBundleIconFile: AppIcon
+        CFBundleDisplayName: Downbar
+        NSHighResolutionCapable: true
+        LSMinimumSystemVersion: "14.0"
     settings:
       base:
-        INFOPLIST_KEY_LSUIElement: YES
         ASSETCATALOG_COMPILER_APPICON_NAME: ""
-    # AppIcon.icns is referenced via Info.plist's CFBundleIconFile and copied as
-    # a bundle resource (no asset catalog needed for a single .icns icon).
-    resources:
-      - path: Resources/AppIcon.icns

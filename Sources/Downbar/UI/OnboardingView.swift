@@ -11,6 +11,7 @@ struct OnboardingView: View {
             Image(systemName: "gauge.with.dots.needle.bottom.50percent")
                 .font(.system(size: 44, weight: .regular))
                 .foregroundStyle(.tint)
+                .accessibilityHidden(true)
 
             VStack(spacing: 6) {
                 Text("Welcome to Downbar")
@@ -65,8 +66,11 @@ private struct MeterLegend: View {
                 .font(.system(size: 14))
                 .foregroundStyle(indicator.color)
                 .frame(width: 18)
+                .accessibilityHidden(true)
             Text(text)
                 .font(.system(size: 12))
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(text)
     }
 }

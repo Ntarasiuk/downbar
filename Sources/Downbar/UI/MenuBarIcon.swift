@@ -21,7 +21,15 @@ struct MenuBarIcon: View {
         }
         .foregroundStyle(indicator.color)
         .frame(width: 18, height: 16, alignment: .bottom)
-        .accessibilityLabel("Service status")
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Downbar — \(accessibilityState)")
+    }
+
+    /// Spoken description of the current aggregate health, so the menu-bar item
+    /// announces "All Systems Operational", "Major Outage", etc. rather than a
+    /// generic "Service status".
+    private var accessibilityState: String {
+        indicator == .none ? String(localized: "All systems operational") : indicator.defaultDescription
     }
 
     /// When everything is healthy all three bars are solid; degraded/outage

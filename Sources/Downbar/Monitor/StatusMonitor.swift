@@ -29,6 +29,7 @@ final class StatusMonitor: ObservableObject {
     }
 
     private let store: ServiceStore
+    private let history: StatusHistory
     private var timer: Timer?
 
     private let pathMonitor = NWPathMonitor()
@@ -37,8 +38,9 @@ final class StatusMonitor: ObservableObject {
     private static let intervalKey = "refreshInterval"
     static let defaultInterval: TimeInterval = 300 // 5 minutes
 
-    init(store: ServiceStore = .shared) {
+    init(store: ServiceStore = .shared, history: StatusHistory = .shared) {
         self.store = store
+        self.history = history
         self.services = store.load()
         let saved = UserDefaults.standard.double(forKey: Self.intervalKey)
         self.refreshInterval = saved > 0 ? saved : Self.defaultInterval
@@ -119,6 +121,8 @@ final class StatusMonitor: ObservableObject {
             // An unreachable reading isn't a real health change — keep the last
             // known state so a flap doesn't spam alerts, and stay silent.
             guard r.indicator != .unknown else { continue }
+            // Record real readings locally to drive the per-service sparkline.
+            history.append(serviceID: r.serviceID, indicator: r.indicator, at: r.lastChecked)
             // Only notify after we have a prior known reading, so initial states
             // are silent.
             if let old, let service = snapshot.first(where: { $0.id == r.serviceID }) {
@@ -128,18 +132,35 @@ final class StatusMonitor: ObservableObject {
         }
     }
 
-    /// Posts a notification when a service enters or worsens an issue, or recovers.
+    /// Dispatches alerts (native notification and/or webhook) when a service
+    /// enters or worsens an issue, or recovers.
     private func notifyIfChanged(_ service: Service, from old: Indicator, to result: ServiceStatusResult) {
-        guard NotificationPrefs.enabled else { return }
-        // Per-service mute silences both down and recovery alerts.
+        // Per-service mute silences every alert channel for that service.
         guard !NotificationPrefs.isMuted(service.id) else { return }
         let new = result.indicator
+
+        let event: WebhookEvent
         if new > old && new > .none {
             // Honor the severity threshold for "down" alerts only.
             guard new >= NotificationPrefs.minSeverity else { return }
-            Notifier.post(title: "\(service.name): \(new.defaultDescription)", body: result.description, url: service.url)
+            event = .down
         } else if new == .none && old > .none {
-            Notifier.post(title: "\(service.name) recovered", body: "All Systems Operational", url: service.url)
+            event = .recovered
+        } else {
+            return
+        }
+
+        let (title, body): (String, String) = event == .down
+            ? ("\(service.name): \(new.defaultDescription)", result.description)
+            : ("\(service.name) recovered", "All Systems Operational")
+
+        // Each channel is independent: webhook works even with native
+        // notifications turned off, and vice-versa.
+        if NotificationPrefs.enabled {
+            Notifier.post(title: title, body: body, url: service.url)
+        }
+        if WebhookPrefs.isConfigured {
+            Webhook.send(event: event, service: service, indicator: new, message: result.description)
         }
     }
 
@@ -157,6 +178,12 @@ final class StatusMonitor: ObservableObject {
 
     func result(for service: Service) -> ServiceStatusResult? {
         results[service.id]
+    }
+
+    /// Recent locally-recorded readings for a service, oldest first, for the
+    /// sparkline. Empty until at least one successful poll has landed.
+    func history(for service: Service) -> [Indicator] {
+        history.samples(for: service.id).map { Indicator(rawValue: $0.indicator) ?? .unknown }
     }
 
     /// One-line headline for the dropdown header, derived from `aggregate`.

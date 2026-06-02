@@ -20,7 +20,7 @@ if a longer name reads better in search.)
 
 ## Promotional text (max 170 chars)
 
-Watch the services you depend on — AWS, Stripe, GitHub, OpenAI and ~95 more —
+Watch the services you depend on — AWS, Stripe, GitHub, OpenAI and 110+ more —
 from your menu bar. Get notified the moment one goes down, and again when it
 recovers.
 
@@ -29,7 +29,7 @@ recovers.
 Downbar keeps the status of the services you depend on one glance away, right in
 your menu bar.
 
-Pick from a curated catalog of ~95 services across 12 categories — Developer
+Pick from a curated catalog of 110+ services across 12 categories — Developer
 Tools, Cloud & Infrastructure, Data & Backend, Communication, Productivity,
 Observability, Payments, Hosting, Identity, AI APIs and more — or paste any
 public status page URL. Downbar polls them quietly in the background and shows a
@@ -44,7 +44,7 @@ WHY DOWNBAR
 
 • Live menu-bar health meter — the worst status across everything you watch, at
   a glance.
-• ~95 curated services, organized into 12 categories with per-category "select
+• 110+ curated services, organized into 12 categories with per-category "select
   all."
 • Add any Statuspage.io, Instatus, or plain website URL.
 • Notifications on outage and on recovery.
@@ -72,16 +72,15 @@ already separate terms.)
 
 ## Support URL
 
-`https://example.com/downbar/support` _(placeholder — replace before submission)_
+`https://github.com/Ntarasiuk/downbar/issues` _(private repo for now — swap for a public support site if the repo isn't made public)_
 
 ## Marketing URL (optional)
 
-`https://example.com/downbar` _(placeholder)_
+`https://github.com/Ntarasiuk/downbar` _(private repo for now — swap for a public landing page later)_
 
 ## Privacy Policy URL
 
-Host `PRIVACY.md` content at a public URL, e.g.
-`https://example.com/downbar/privacy` _(placeholder — required field)_
+`https://github.com/Ntarasiuk/downbar/blob/master/PRIVACY.md` _(required field; private repo for now — host `PRIVACY.md` at a public URL once the repo or a site is public)_
 
 ## Category
 

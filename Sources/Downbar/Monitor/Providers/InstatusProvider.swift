@@ -49,7 +49,10 @@ struct InstatusProvider: StatusProvider {
             // ones in Instatus' summary feed — the newest is listed first.
             let incidentTitle = incidents.first?.name ?? maintenances.first?.name
             let description = incidentTitle ?? worst.defaultDescription
-            return result(service, worst, description, incidentTitle: incidentTitle)
+            // Planned work, not an outage: a maintenance window or maintenance
+            // page status with no unplanned incident in progress.
+            let isMaintenance = incidents.isEmpty && (!maintenances.isEmpty || status.contains("MAINTEN"))
+            return result(service, worst, description, incidentTitle: incidentTitle, isMaintenance: isMaintenance)
         } catch {
             return unknown(service, error.localizedDescription)
         }

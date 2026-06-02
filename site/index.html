@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Downbar — Public status pages, right in your menu bar</title>
+  <meta name="description" content="Downbar is a $2.99 macOS menu-bar app that watches 110+ public status pages — AI, cloud, dev tools, payments — and tells you the moment something goes down, and when it recovers." />
+  <meta name="color-scheme" content="dark light" />
+  <meta property="og:title" content="Downbar — Public status pages in your menu bar" />
+  <meta property="og:description" content="Watch 110+ public status pages from your macOS menu bar. Down & recovery alerts, a health-meter icon, offline awareness, per-service mute." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="img/og.png" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <a class="skip-link" href="#features">Skip to content</a>
+
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="#top">
+        <img src="img/icon.png" alt="" width="32" height="32" class="brand-icon" />
+        <span class="brand-name">Downbar</span>
+      </a>
+      <nav class="site-nav" aria-label="Primary">
+        <a href="#features">Features</a>
+        <a href="#how">How it works</a>
+        <a href="https://github.com/Ntarasiuk/downbar">GitHub</a>
+        <a class="nav-cta" href="#app-store">Download</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- Hero -->
+    <section class="hero">
+      <div class="wrap hero-inner">
+        <div class="hero-copy">
+          <p class="eyebrow">macOS menu-bar app</p>
+          <h1>Every status page you care about, in one quiet menu-bar glance.</h1>
+          <p class="lede">
+            Downbar watches <strong>110+ public status pages</strong> — AI, cloud,
+            developer tools, payments and more — and tells you the moment something
+            goes down, then again when it recovers. No tabs, no dashboards, no noise.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#app-store">
+              <span aria-hidden="true">&#63743;</span> Download on the App Store
+            </a>
+            <span class="price">$2.99 · one-time · macOS 14+</span>
+          </div>
+        </div>
+        <div class="hero-art">
+          <img
+            src="img/hero-menu.png"
+            alt="Downbar's menu-bar panel listing services such as OpenAI, Cloudflare and Stripe, each with a colored health indicator."
+            width="420" height="520" loading="eager" />
+        </div>
+      </div>
+    </section>
+
+    <!-- Feature grid -->
+    <section id="features" class="features" aria-labelledby="features-heading">
+      <div class="wrap">
+        <h2 id="features-heading">Built to stay out of your way</h2>
+        <ul class="feature-grid">
+          <li class="feature">
+            <h3>110+ status pages</h3>
+            <p>A curated catalog spanning AI, cloud, dev tools, payments and 8 more categories — monitored concurrently.</p>
+          </li>
+          <li class="feature">
+            <h3>Down &amp; recovery alerts</h3>
+            <p>Get notified the moment a service degrades, and again when it's back. De-flap debouncing kills the noise.</p>
+          </li>
+          <li class="feature">
+            <h3>Health-meter icon</h3>
+            <p>The menu-bar icon aggregates everything you watch into a single at-a-glance severity color.</p>
+          </li>
+          <li class="feature">
+            <h3>Offline awareness</h3>
+            <p>Downbar knows the difference between "your Wi-Fi dropped" and "the service is actually down."</p>
+          </li>
+          <li class="feature">
+            <h3>Per-service mute</h3>
+            <p>Silence the chatty ones. Keep alerts only for the services that matter to you right now.</p>
+          </li>
+          <li class="feature">
+            <h3>Uptime history</h3>
+            <p>A rolling record of recent checks so you can spot the flaky services before they bite.</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section id="how" class="how" aria-labelledby="how-heading">
+      <div class="wrap how-inner">
+        <div class="how-copy">
+          <h2 id="how-heading">How it works</h2>
+          <p>
+            Pick the services you depend on during a quick first-launch setup. Downbar
+            polls each one's official public status feed — Statuspage, Instatus, AWS,
+            Apple, Google Cloud, Azure, or a plain website check — and folds every result
+            into one tidy menu and a single menu-bar color.
+          </p>
+          <p>
+            When something breaks, you get a notification you can click straight through
+            to the incident. When it's fixed, you get the all-clear. Reorder, mute, or set
+            a severity threshold so you only hear about what's worth hearing about.
+          </p>
+        </div>
+        <div class="how-art">
+          <img
+            src="img/notification.png"
+            alt="A macOS notification reading 'OpenAI is experiencing a major outage', with the Downbar app icon."
+            width="380" height="120" loading="lazy" />
+        </div>
+      </div>
+    </section>
+
+    <!-- Closing CTA -->
+    <section class="cta" aria-labelledby="cta-heading">
+      <div class="wrap cta-inner">
+        <h2 id="cta-heading">Stop refreshing status pages.</h2>
+        <p>One purchase. Every status page you watch, in your menu bar, forever.</p>
+        <a class="btn btn-primary" href="#app-store">
+          <span aria-hidden="true">&#63743;</span> Download on the App Store — $2.99
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <p class="footer-brand">Downbar</p>
+      <nav class="footer-nav" aria-label="Footer">
+        <a href="https://github.com/Ntarasiuk/downbar">GitHub</a>
+        <a href="PRIVACY">Privacy</a>
+        <a href="#app-store">App Store</a>
+      </nav>
+      <p class="footer-fine">Made for macOS. Status data belongs to the respective providers.</p>
+    </div>
+  </footer>
+</body>
+</html>

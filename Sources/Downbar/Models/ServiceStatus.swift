@@ -67,6 +67,10 @@ struct ServiceStatusResult: Identifiable {
     /// Name of the most recent active/unresolved incident, when one is in
     /// progress. More specific than `description`; nil when all clear.
     var incidentTitle: String? = nil
+    /// Whether the current reading reflects scheduled/active maintenance rather
+    /// than an unplanned issue. The `indicator` stays `.minor`; this only drives
+    /// calmer styling so a maintenance window doesn't read as an outage.
+    var isMaintenance: Bool = false
 
     var id: UUID { serviceID }
 }

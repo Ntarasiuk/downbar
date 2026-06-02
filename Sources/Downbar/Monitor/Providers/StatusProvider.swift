@@ -28,13 +28,14 @@ extension StatusProvider {
         )
     }
 
-    func result(_ service: Service, _ indicator: Indicator, _ description: String, incidentTitle: String? = nil) -> ServiceStatusResult {
+    func result(_ service: Service, _ indicator: Indicator, _ description: String, incidentTitle: String? = nil, isMaintenance: Bool = false) -> ServiceStatusResult {
         ServiceStatusResult(
             serviceID: service.id,
             indicator: indicator,
             description: description.isEmpty ? indicator.defaultDescription : description,
             lastChecked: Date(),
-            incidentTitle: incidentTitle
+            incidentTitle: incidentTitle,
+            isMaintenance: isMaintenance
         )
     }
 }

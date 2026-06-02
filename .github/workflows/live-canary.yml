@@ -1,0 +1,27 @@
+name: live-canary
+
+# Weekly canary that hits the real public status pages and fails if any
+# provider's feed no longer parses (upstream format drift). Kept out of the
+# normal test run so day-to-day CI stays offline-green and deterministic.
+
+on:
+  schedule:
+    # 08:00 UTC every Monday.
+    - cron: "0 8 * * 1"
+  workflow_dispatch:
+
+jobs:
+  live-feeds:
+    name: Live feed parse check
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Show Swift version
+        run: swift --version
+
+      - name: Run live provider tests
+        env:
+          RUN_LIVE_TESTS: "1"
+        run: swift test --filter LiveProviderTests

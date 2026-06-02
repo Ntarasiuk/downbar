@@ -26,6 +26,7 @@ struct MenuContent: View {
                 .font(.system(size: 22))
                 .foregroundStyle(monitor.aggregate.color)
                 .frame(width: 26)
+                .accessibilityHidden(true)
 
             VStack(alignment: .leading, spacing: 1) {
                 Text(monitor.summary)
@@ -35,6 +36,8 @@ struct MenuContent: View {
                     .font(.system(size: 11))
                     .foregroundStyle(.secondary)
             }
+            // Read the aggregate summary and freshness as a single header element.
+            .accessibilityElement(children: .combine)
 
             Spacer(minLength: 6)
 
@@ -45,10 +48,13 @@ struct MenuContent: View {
     }
 
     private var updatedText: String {
-        guard let updated = monitor.lastUpdated else { return "Checking…" }
+        guard let updated = monitor.lastUpdated else {
+            return String(localized: "Checking…")
+        }
         let formatter = RelativeDateTimeFormatter()
         formatter.unitsStyle = .full
-        return "Updated " + formatter.localizedString(for: updated, relativeTo: Date())
+        let relative = formatter.localizedString(for: updated, relativeTo: Date())
+        return String(localized: "Updated \(relative)")
     }
 
     // MARK: - Service list
@@ -58,15 +64,20 @@ struct MenuContent: View {
         return ScrollView {
             VStack(spacing: 2) {
                 ForEach(groups.affected) { service in
-                    ServiceRow(service: service, result: monitor.result(for: service))
+                    ServiceRow(service: service,
+                               result: monitor.result(for: service),
+                               history: monitor.history(for: service))
                 }
                 if !groups.affected.isEmpty && !groups.healthy.isEmpty {
                     Divider()
                         .padding(.horizontal, 8)
                         .padding(.vertical, 5)
+                        .accessibilityHidden(true)
                 }
                 ForEach(groups.healthy) { service in
-                    ServiceRow(service: service, result: monitor.result(for: service))
+                    ServiceRow(service: service,
+                               result: monitor.result(for: service),
+                               history: monitor.history(for: service))
                 }
             }
             .padding(6)
@@ -141,6 +152,8 @@ private struct RefreshButton: View {
         .onHover { hovering = $0 }
         .keyboardShortcut("r")
         .help("Refresh now")
+        .accessibilityLabel("Refresh now")
+        .accessibilityValue(monitor.isRefreshing ? "Refreshing" : "")
     }
 }
 
@@ -156,6 +169,7 @@ private struct FooterButton: View {
             HStack(spacing: 6) {
                 Image(systemName: systemImage)
                     .font(.system(size: 11, weight: .medium))
+                    .accessibilityHidden(true)
                 Text(title)
                     .font(.system(size: 12))
             }
@@ -170,5 +184,6 @@ private struct FooterButton: View {
         }
         .buttonStyle(.plain)
         .onHover { hovering = $0 }
+        .accessibilityLabel(title)
     }
 }

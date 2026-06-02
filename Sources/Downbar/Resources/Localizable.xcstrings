@@ -1,0 +1,846 @@
+{
+  "sourceLanguage" : "en",
+  "version" : "1.0",
+  "strings" : {
+    "Add" : {
+      "comment" : "Button: confirm adding a custom service",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add"
+          }
+        }
+      }
+    },
+    "Add a Custom Service" : {
+      "comment" : "Settings: title of the custom-service form",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add a Custom Service"
+          }
+        }
+      }
+    },
+    "All regions" : {
+      "comment" : "Settings: AWS region summary when no specific regions are selected",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All regions"
+          }
+        }
+      }
+    },
+    "All systems operational" : {
+      "comment" : "Menu-bar icon accessibility: everything is healthy",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All systems operational"
+          }
+        }
+      }
+    },
+    "Alerts webhook" : {
+      "comment" : "Settings: webhook section header",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alerts webhook"
+          }
+        }
+      }
+    },
+    "Any issue" : {
+      "comment" : "Settings: notify about any issue severity",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Any issue"
+          }
+        }
+      }
+    },
+    "AWS regions" : {
+      "comment" : "Settings: AWS regions row label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AWS regions"
+          }
+        }
+      }
+    },
+    "AWS Regions" : {
+      "comment" : "AWS region picker popover title",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AWS Regions"
+          }
+        }
+      }
+    },
+    "Checking…" : {
+      "comment" : "Placeholder shown before a status has been fetched",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Checking…"
+          }
+        }
+      }
+    },
+    "Choose Services" : {
+      "comment" : "Onboarding: button that opens Settings",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose Services"
+          }
+        }
+      }
+    },
+    "Choose the services you want to monitor." : {
+      "comment" : "Settings: Services tab subtitle",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose the services you want to monitor."
+          }
+        }
+      }
+    },
+    "Clear search" : {
+      "comment" : "Accessibility label for the clear-search button",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clear search"
+          }
+        }
+      }
+    },
+    "Couldn't read a %@ feed there (%@)" : {
+      "comment" : "Settings: validation error when a custom status feed can't be read. First argument is the provider name (not localized); second is the underlying status description.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't read a %1$@ feed there (%2$@)"
+          }
+        }
+      }
+    },
+    "Critical only" : {
+      "comment" : "Settings: notify only about critical outages",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Critical only"
+          }
+        }
+      }
+    },
+    "Custom" : {
+      "comment" : "Settings: section header for user-added services",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Custom"
+          }
+        }
+      }
+    },
+    "Degraded — minor issues or maintenance." : {
+      "comment" : "Onboarding: meter legend for the degraded state",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Degraded — minor issues or maintenance."
+          }
+        }
+      }
+    },
+    "Delivered" : {
+      "comment" : "Settings: webhook test succeeded",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delivered"
+          }
+        }
+      }
+    },
+    "Deselect all" : {
+      "comment" : "Settings: disable monitoring for every service in a category",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deselect all"
+          }
+        }
+      }
+    },
+    "Downbar — %@" : {
+      "comment" : "Menu-bar icon accessibility label. Argument is the current aggregate health description; \"Downbar\" is the app name and not localized.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Downbar — %@"
+          }
+        }
+      }
+    },
+    "Downbar lives in your menu bar and keeps an eye on the services you depend on." : {
+      "comment" : "Onboarding: subtitle",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Downbar lives in your menu bar and keeps an eye on the services you depend on."
+          }
+        }
+      }
+    },
+    "Failed — check the URL" : {
+      "comment" : "Settings: webhook test failed",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Failed — check the URL"
+          }
+        }
+      }
+    },
+    "General" : {
+      "comment" : "Settings: General tab title",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "General"
+          }
+        }
+      }
+    },
+    "Get a notification when a monitored service starts having issues or recovers." : {
+      "comment" : "Settings: notifications section footer",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Get a notification when a monitored service starts having issues or recovers."
+          }
+        }
+      }
+    },
+    "Healthy — everything is operational." : {
+      "comment" : "Onboarding: meter legend for the healthy state",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Healthy — everything is operational."
+          }
+        }
+      }
+    },
+    "Invalid URL" : {
+      "comment" : "Settings: validation error for a malformed custom URL",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invalid URL"
+          }
+        }
+      }
+    },
+    "Launch at login" : {
+      "comment" : "Settings: toggle to start Downbar at login",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Launch at login"
+          }
+        }
+      }
+    },
+    "Major outages" : {
+      "comment" : "Settings: notify about major outages and above",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Major outages"
+          }
+        }
+      }
+    },
+    "Monitor %@" : {
+      "comment" : "Accessibility label for a catalog service's monitor toggle. Argument is the service name (not localized).",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Monitor %@"
+          }
+        }
+      }
+    },
+    "Monitor all" : {
+      "comment" : "AWS region picker: select all regions",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Monitor all"
+          }
+        }
+      }
+    },
+    "Monitored (drag to reorder)" : {
+      "comment" : "Settings: header of the currently monitored, reorderable section",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Monitored (drag to reorder)"
+          }
+        }
+      }
+    },
+    "Mute notifications" : {
+      "comment" : "Accessibility/help: mute a service's notifications",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mute notifications"
+          }
+        }
+      }
+    },
+    "Name" : {
+      "comment" : "Settings: custom-service name field placeholder",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name"
+          }
+        }
+      }
+    },
+    "Not Now" : {
+      "comment" : "Onboarding: dismiss button",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not Now"
+          }
+        }
+      }
+    },
+    "Notifications muted" : {
+      "comment" : "Help text when a service's notifications are muted",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notifications muted"
+          }
+        }
+      }
+    },
+    "Notify me about" : {
+      "comment" : "Settings: severity-threshold picker label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notify me about"
+          }
+        }
+      }
+    },
+    "Notify when a service goes down" : {
+      "comment" : "Settings: notifications toggle",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notify when a service goes down"
+          }
+        }
+      }
+    },
+    "Only count AWS incidents in the selected regions. Global services (Route 53, IAM, CloudFront…) always count. Leave all unchecked to monitor every region." : {
+      "comment" : "Settings: AWS regions section footer. Service names are not localized.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Only count AWS incidents in the selected regions. Global services (Route 53, IAM, CloudFront…) always count. Leave all unchecked to monitor every region."
+          }
+        }
+      }
+    },
+    "Open %@" : {
+      "comment" : "Tooltip for a service row. Argument is the service host or name (not localized).",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open %@"
+          }
+        }
+      }
+    },
+    "Open Settings to choose which services to watch." : {
+      "comment" : "Onboarding: hint above the action buttons",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Settings to choose which services to watch."
+          }
+        }
+      }
+    },
+    "Opens the status page" : {
+      "comment" : "Accessibility hint for a service row",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens the status page"
+          }
+        }
+      }
+    },
+    "Outage — a service is down." : {
+      "comment" : "Onboarding: meter legend for the outage state",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Outage — a service is down."
+          }
+        }
+      }
+    },
+    "Paste a public status page; Downbar reads its live feed." : {
+      "comment" : "Settings: hint for adding a status-page service. \"Downbar\" is the app name.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paste a public status page; Downbar reads its live feed."
+          }
+        }
+      }
+    },
+    "Pings any site or server over HTTP — reports online/offline with latency." : {
+      "comment" : "Settings: hint for adding a website ping service",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pings any site or server over HTTP — reports online/offline with latency."
+          }
+        }
+      }
+    },
+    "POST a JSON alert (with Slack `text` and Discord `content` fields) to this URL on the same up/down transitions. Works even if notifications are off; respects per-service mute and the severity threshold." : {
+      "comment" : "Settings: webhook section footer. Field names and brand names are not localized.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "POST a JSON alert (with Slack `text` and Discord `content` fields) to this URL on the same up/down transitions. Works even if notifications are off; respects per-service mute and the severity threshold."
+          }
+        }
+      }
+    },
+    "Quit" : {
+      "comment" : "Panel footer: quit the app",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quit"
+          }
+        }
+      }
+    },
+    "Refresh every" : {
+      "comment" : "Settings: refresh-interval picker label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Refresh every"
+          }
+        }
+      }
+    },
+    "Refresh now" : {
+      "comment" : "Help/accessibility label for the refresh button",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Refresh now"
+          }
+        }
+      }
+    },
+    "Refreshing" : {
+      "comment" : "Accessibility value while a refresh is in progress",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Refreshing"
+          }
+        }
+      }
+    },
+    "Remove %@" : {
+      "comment" : "Help/accessibility label to remove a custom service. Argument is the service name (not localized).",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove %@"
+          }
+        }
+      }
+    },
+    "Search services" : {
+      "comment" : "Settings: search-field placeholder and accessibility label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search services"
+          }
+        }
+      }
+    },
+    "Select all" : {
+      "comment" : "Settings: enable monitoring for every service in a category",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select all"
+          }
+        }
+      }
+    },
+    "Send test" : {
+      "comment" : "Settings: send a test webhook",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Send test"
+          }
+        }
+      }
+    },
+    "Sending…" : {
+      "comment" : "Settings: webhook test in progress",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sending…"
+          }
+        }
+      }
+    },
+    "Services" : {
+      "comment" : "Settings: Services tab title",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Services"
+          }
+        }
+      }
+    },
+    "Settings" : {
+      "comment" : "Panel footer: open Settings",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settings"
+          }
+        }
+      }
+    },
+    "Status page URL" : {
+      "comment" : "Settings: placeholder for a status-page URL field",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Status page URL"
+          }
+        }
+      }
+    },
+    "Unmute notifications" : {
+      "comment" : "Accessibility label to unmute a service's notifications",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unmute notifications"
+          }
+        }
+      }
+    },
+    "Unreachable — Downbar can’t reach the feed." : {
+      "comment" : "Onboarding: meter legend for the unreachable state. \"Downbar\" is the app name.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unreachable — Downbar can’t reach the feed."
+          }
+        }
+      }
+    },
+    "Under Maintenance" : {
+      "comment" : "Service row description while a service is under maintenance",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Under Maintenance"
+          }
+        }
+      }
+    },
+    "under maintenance" : {
+      "comment" : "Accessibility phrase appended to a row read aloud while under maintenance",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "under maintenance"
+          }
+        }
+      }
+    },
+    "Updated %@" : {
+      "comment" : "Panel header freshness. Argument is a relative time such as \"2 minutes ago\".",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Updated %@"
+          }
+        }
+      }
+    },
+    "updated %@" : {
+      "comment" : "Accessibility phrase appended to a row read aloud. Argument is a relative time.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "updated %@"
+          }
+        }
+      }
+    },
+    "Webhook URL" : {
+      "comment" : "Settings: webhook URL field label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Webhook URL"
+          }
+        }
+      }
+    },
+    "Welcome to Downbar" : {
+      "comment" : "Onboarding title and window title. \"Downbar\" is the app name.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Welcome to Downbar"
+          }
+        }
+      }
+    },
+    "%lld selected" : {
+      "comment" : "Settings: count of selected AWS regions",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld selected"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld selected"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "1 minute" : {
+      "comment" : "Settings: refresh interval option",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1 minute"
+          }
+        }
+      }
+    },
+    "5 minutes" : {
+      "comment" : "Settings: refresh interval option",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "5 minutes"
+          }
+        }
+      }
+    },
+    "15 minutes" : {
+      "comment" : "Settings: refresh interval option",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "15 minutes"
+          }
+        }
+      }
+    },
+    "30 minutes" : {
+      "comment" : "Settings: refresh interval option",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "30 minutes"
+          }
+        }
+      }
+    }
+  }
+}

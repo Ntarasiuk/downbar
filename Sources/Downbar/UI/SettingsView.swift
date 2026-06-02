@@ -114,15 +114,18 @@ private struct SearchField: View {
             Image(systemName: "magnifyingglass")
                 .font(.system(size: 12))
                 .foregroundStyle(.secondary)
+                .accessibilityHidden(true)
             TextField("Search services", text: $text)
                 .textFieldStyle(.plain)
                 .font(.system(size: 13))
+                .accessibilityLabel("Search services")
             if !text.isEmpty {
                 Button { text = "" } label: {
                     Image(systemName: "xmark.circle.fill")
                 }
                 .buttonStyle(.plain)
                 .foregroundStyle(.tertiary)
+                .accessibilityLabel("Clear search")
             }
         }
         .padding(.horizontal, 8)
@@ -181,6 +184,7 @@ private struct CatalogRow: View {
                     .font(.system(size: 13))
                     .foregroundStyle(indicator?.color ?? .secondary.opacity(0.4))
                     .frame(width: 16)
+                    .accessibilityHidden(true)
                 VStack(alignment: .leading, spacing: 1) {
                     Text(entry.name).font(.system(size: 13))
                     Text(entry.host).font(.system(size: 10)).foregroundStyle(.secondary)
@@ -193,6 +197,7 @@ private struct CatalogRow: View {
         }
         .toggleStyle(.switch)
         .controlSize(.mini)
+        .accessibilityLabel("Monitor \(entry.name)")
     }
 }
 
@@ -217,6 +222,7 @@ private struct MuteButton: View {
         .buttonStyle(.borderless)
         .foregroundStyle(muted ? AnyShapeStyle(.tint) : AnyShapeStyle(.secondary))
         .help(muted ? "Notifications muted" : "Mute notifications")
+        .accessibilityLabel(muted ? "Unmute notifications" : "Mute notifications")
     }
 }
 
@@ -232,6 +238,7 @@ private struct CustomRow: View {
                 .font(.system(size: 13))
                 .foregroundStyle(indicator.color)
                 .frame(width: 16)
+                .accessibilityHidden(true)
             VStack(alignment: .leading, spacing: 1) {
                 Text(service.name).font(.system(size: 13))
                 Text(service.url.host() ?? service.url.absoluteString)
@@ -246,6 +253,8 @@ private struct CustomRow: View {
             }
             .buttonStyle(.borderless)
             .foregroundStyle(.secondary)
+            .help("Remove \(service.name)")
+            .accessibilityLabel("Remove \(service.name)")
         }
     }
 }
@@ -262,12 +271,16 @@ private struct ReorderRow: View {
                 .font(.system(size: 13))
                 .foregroundStyle(indicator.color)
                 .frame(width: 16)
+                .accessibilityHidden(true)
             Text(service.name).font(.system(size: 13))
             Spacer()
             Image(systemName: "line.3.horizontal")
                 .font(.system(size: 12))
                 .foregroundStyle(.tertiary)
+                .accessibilityHidden(true)
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(service.name)
     }
 }
 
@@ -315,10 +328,10 @@ private struct CustomAddForm: View {
     private func add() async {
         error = nil
         guard var url = URL(string: urlText.trimmingCharacters(in: .whitespaces)), url.host != nil || url.scheme == nil else {
-            error = "Invalid URL"; return
+            error = String(localized: "Invalid URL"); return
         }
         if url.scheme == nil { url = URL(string: "https://\(urlText.trimmingCharacters(in: .whitespaces))") ?? url }
-        guard url.host != nil else { error = "Invalid URL"; return }
+        guard url.host != nil else { error = String(localized: "Invalid URL"); return }
 
         // Validate status-feed providers up front; a website check is allowed
         // even when currently down (that's a valid thing to want to watch).
@@ -328,7 +341,7 @@ private struct CustomAddForm: View {
             let probe = Service(name: name, url: url, provider: provider)
             let r = await ProviderRegistry.provider(for: provider).fetch(probe)
             if r.indicator == .unknown {
-                error = "Couldn't read a \(provider.displayName) feed there (\(r.description))"; return
+                error = String(localized: "Couldn't read a \(provider.displayName) feed there (\(r.description))"); return
             }
         }
 
@@ -345,6 +358,10 @@ private struct GeneralTab: View {
     @State private var regions = AWSRegionFilter.selected
     @State private var notify = NotificationPrefs.enabled
     @State private var minSeverity = NotificationPrefs.minSeverity
+    @State private var webhookURL = WebhookPrefs.urlString
+    @State private var webhookTesting = false
+    @State private var webhookTestOK: Bool?
+    @State private var showingRegions = false
 
     var body: some View {
         Form {
@@ -386,23 +403,49 @@ private struct GeneralTab: View {
                     .foregroundStyle(.secondary)
             }
 
+            Section {
+                TextField("Webhook URL", text: $webhookURL, prompt: Text("https://hooks.slack.com/… or any endpoint"))
+                    .textFieldStyle(.roundedBorder)
+                    .onChange(of: webhookURL) { _, newValue in
+                        WebhookPrefs.urlString = newValue
+                        webhookTestOK = nil
+                    }
+                HStack {
+                    Button(webhookTesting ? "Sending…" : "Send test") {
+                        Task { await sendWebhookTest() }
+                    }
+                    .disabled(WebhookPrefs.url == nil || webhookTesting)
+
+                    if let ok = webhookTestOK {
+                        Label(ok ? "Delivered" : "Failed — check the URL",
+                              systemImage: ok ? "checkmark.circle.fill" : "xmark.circle.fill")
+                            .font(.system(size: 11))
+                            .foregroundStyle(ok ? .green : .red)
+                    }
+                    Spacer()
+                }
+            } header: {
+                Text("Alerts webhook")
+            } footer: {
+                Text("POST a JSON alert (with Slack `text` and Discord `content` fields) to this URL on the same up/down transitions. Works even if notifications are off; respects per-service mute and the severity threshold.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+
             if monitor.monitorsAWS {
                 Section {
-                    Menu {
-                        Button { setRegions([]) } label: {
-                            Label("All regions", systemImage: regions.isEmpty ? "checkmark" : "circle")
-                        }
-                        Divider()
-                        ForEach(AWSRegionFilter.common, id: \.self) { region in
-                            Button { toggle(region) } label: {
-                                Label(region, systemImage: regions.contains(region) ? "checkmark" : "circle")
-                            }
-                        }
+                    Button {
+                        showingRegions = true
                     } label: {
                         LabeledContent("AWS regions", value: regionsSummary)
+                            .contentShape(Rectangle())
+                    }
+                    .buttonStyle(.plain)
+                    .popover(isPresented: $showingRegions, arrowEdge: .bottom) {
+                        AWSRegionPicker(selected: $regions, onChange: persist)
                     }
                 } footer: {
-                    Text("Only count AWS incidents in the selected regions. Global services (Route 53, IAM, CloudFront…) always count. Leave on “All regions” to monitor everything.")
+                    Text("Only count AWS incidents in the selected regions. Global services (Route 53, IAM, CloudFront…) always count. Leave all unchecked to monitor every region.")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
@@ -411,23 +454,115 @@ private struct GeneralTab: View {
         .formStyle(.grouped)
     }
 
+    private func sendWebhookTest() async {
+        guard let url = WebhookPrefs.url else { return }
+        webhookTesting = true
+        webhookTestOK = nil
+        let ok = await Webhook.sendTest(to: url)
+        webhookTesting = false
+        webhookTestOK = ok
+    }
+
     private var regionsSummary: String {
-        regions.isEmpty ? "All regions" : "\(regions.count) selected"
-    }
-
-    private func toggle(_ region: String) {
-        if regions.contains(region) { regions.remove(region) } else { regions.insert(region) }
-        persist()
-    }
-
-    private func setRegions(_ new: Set<String>) {
-        regions = new
-        persist()
+        regions.isEmpty
+            ? String(localized: "All regions")
+            : String(localized: "\(regions.count) selected")
     }
 
     private func persist() {
         AWSRegionFilter.selected = regions
         Task { await monitor.refresh() }
+    }
+}
+
+/// A stay-open checklist for multi-selecting AWS regions, grouped by geography.
+/// An empty selection means "all regions".
+private struct AWSRegionPicker: View {
+    @Binding var selected: Set<String>
+    let onChange: () -> Void
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            HStack {
+                Text("AWS Regions")
+                    .font(.system(size: 13, weight: .semibold))
+                Spacer()
+                Button("Monitor all") {
+                    selected = []
+                    onChange()
+                }
+                .buttonStyle(.plain)
+                .font(.system(size: 11))
+                .foregroundStyle(.tint)
+                .disabled(selected.isEmpty)
+            }
+            .padding(.horizontal, 14)
+            .padding(.vertical, 11)
+
+            Divider()
+
+            ScrollView {
+                VStack(alignment: .leading, spacing: 0) {
+                    ForEach(AWSRegionFilter.groups, id: \.title) { group in
+                        Text(group.title)
+                            .font(.system(size: 11, weight: .semibold))
+                            .foregroundStyle(.secondary)
+                            .padding(.horizontal, 14)
+                            .padding(.top, 10)
+                            .padding(.bottom, 3)
+
+                        ForEach(group.regions, id: \.code) { region in
+                            RegionRow(region: region,
+                                      isOn: selected.contains(region.code)) {
+                                toggle(region.code)
+                            }
+                        }
+                    }
+                }
+                .padding(.bottom, 8)
+            }
+        }
+        .frame(width: 290, height: 400)
+    }
+
+    private func toggle(_ code: String) {
+        if selected.contains(code) { selected.remove(code) } else { selected.insert(code) }
+        onChange()
+    }
+}
+
+/// One tappable region row with a checkmark; the popover stays open so several
+/// can be selected in a row.
+private struct RegionRow: View {
+    let region: AWSRegionFilter.Region
+    let isOn: Bool
+    let toggle: () -> Void
+    @State private var hovering = false
+
+    var body: some View {
+        Button(action: toggle) {
+            HStack(spacing: 9) {
+                Image(systemName: isOn ? "checkmark.circle.fill" : "circle")
+                    .foregroundStyle(isOn ? AnyShapeStyle(.tint) : AnyShapeStyle(.secondary))
+                    .font(.system(size: 13))
+                    .accessibilityHidden(true)
+                Text(region.code)
+                    .font(.system(size: 12, weight: .medium))
+                Text(region.name)
+                    .font(.system(size: 11))
+                    .foregroundStyle(.secondary)
+                Spacer()
+            }
+            .padding(.horizontal, 14)
+            .padding(.vertical, 5)
+            .contentShape(Rectangle())
+            .background(Color.primary.opacity(hovering ? 0.06 : 0))
+        }
+        .buttonStyle(.plain)
+        .onHover { hovering = $0 }
+        .accessibilityLabel("\(region.code), \(region.name)")
+        .accessibilityValue(isOn ? "Selected" : "Not selected")
+        .accessibilityAddTraits(isOn ? .isSelected : [])
     }
 }
 
