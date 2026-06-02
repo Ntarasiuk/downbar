@@ -1,0 +1,41 @@
+# XcodeGen spec that wraps the SPM `Sources/Downbar` target as a proper macOS
+# .app, so it can be archived and uploaded to App Store Connect (SPM
+# executables cannot). Regenerate the project after any edit here with:
+#   xcodegen generate
+#
+# See RELEASE.md for the full release walkthrough.
+name: Downbar
+options:
+  bundleIdPrefix: com.nathantarasiuk
+  deploymentTarget:
+    macOS: "14.0"
+  createIntermediateGroups: true
+
+settings:
+  base:
+    MARKETING_VERSION: "1.0.0"
+    CURRENT_PROJECT_VERSION: "1"
+    SWIFT_VERSION: "6.0"
+    PRODUCT_BUNDLE_IDENTIFIER: com.nathantarasiuk.downbar
+    GENERATE_INFOPLIST_FILE: NO
+    ENABLE_HARDENED_RUNTIME: YES
+    CODE_SIGN_ENTITLEMENTS: Resources/Downbar.entitlements
+    CODE_SIGN_STYLE: Automatic
+
+targets:
+  Downbar:
+    type: application
+    platform: macOS
+    deploymentTarget: "14.0"
+    sources:
+      - path: Sources/Downbar
+    info:
+      path: Resources/Info.plist
+    settings:
+      base:
+        INFOPLIST_KEY_LSUIElement: YES
+        ASSETCATALOG_COMPILER_APPICON_NAME: ""
+    # AppIcon.icns is referenced via Info.plist's CFBundleIconFile and copied as
+    # a bundle resource (no asset catalog needed for a single .icns icon).
+    resources:
+      - path: Resources/AppIcon.icns

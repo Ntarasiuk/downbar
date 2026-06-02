@@ -1,0 +1,47 @@
+import Foundation
+
+/// Which status-page format a service exposes, and therefore which
+/// `StatusProvider` adapter the monitor dispatches to.
+enum ProviderKind: String, Codable, CaseIterable, Identifiable {
+    case statuspage
+    case instatus
+    case website
+    case aws
+    case apple
+    case gcp
+    case azure
+
+    var id: String { rawValue }
+
+    var displayName: String {
+        switch self {
+        case .statuspage: return "Statuspage.io"
+        case .instatus: return "Instatus"
+        case .website: return "Website / Server"
+        case .aws: return "AWS Health"
+        case .apple: return "Apple System Status"
+        case .gcp: return "Google Cloud Status"
+        case .azure: return "Azure Status"
+        }
+    }
+
+    /// Provider kinds that make sense to add by hand (the rest are fixed-feed
+    /// singletons already in the catalog).
+    static let customAddable: [ProviderKind] = [.statuspage, .instatus, .website]
+}
+
+/// A monitored service: a public status page plus the adapter that reads it.
+struct Service: Codable, Identifiable, Hashable {
+    var id: UUID
+    var name: String
+    /// The public status page URL (also what we open when a row is clicked).
+    var url: URL
+    var provider: ProviderKind
+
+    init(id: UUID = UUID(), name: String, url: URL, provider: ProviderKind = .statuspage) {
+        self.id = id
+        self.name = name
+        self.url = url
+        self.provider = provider
+    }
+}

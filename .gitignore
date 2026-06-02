@@ -1,0 +1,18 @@
+# Swift / SwiftPM
+.build/
+.swiftpm/
+Package.resolved
+
+# Generated app bundle & Xcode project (built via scripts/xcodegen)
+Downbar.app/
+*.xcodeproj/
+*.xcworkspace/
+
+# Generated icon intermediates (regenerate via scripts/make-icon.sh)
+Resources/*.iconset/
+
+# macOS
+.DS_Store
+
+# Screenshots output
+docs/screenshots/*.png
