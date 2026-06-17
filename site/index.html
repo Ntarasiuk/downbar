@@ -3,139 +3,424 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Downbar — Public status pages, right in your menu bar</title>
-  <meta name="description" content="Downbar is a $2.99 macOS menu-bar app that watches 110+ public status pages — AI, cloud, dev tools, payments — and tells you the moment something goes down, and when it recovers." />
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-KMRTV61Q7Y"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-KMRTV61Q7Y');
+  </script>
+  <title>Downbar — Every status page, right in your menu bar</title>
+  <meta name="description" content="Downbar is a $2.99 macOS menu-bar app that watches 110+ public status pages — AI, cloud, dev tools, payments — and tells you the moment something goes down, and the moment it recovers." />
   <meta name="color-scheme" content="dark light" />
-  <meta property="og:title" content="Downbar — Public status pages in your menu bar" />
+  <meta name="theme-color" content="#0c0d10" />
+  <link rel="canonical" href="https://downbar.app/" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="img/apple-touch-icon.png" />
+  <meta property="og:title" content="Downbar — Every status page in your menu bar" />
   <meta property="og:description" content="Watch 110+ public status pages from your macOS menu bar. Down & recovery alerts, a health-meter icon, offline awareness, per-service mute." />
   <meta property="og:type" content="website" />
-  <meta property="og:image" content="img/og.png" />
+  <meta property="og:url" content="https://downbar.app/" />
+  <meta property="og:image" content="https://downbar.app/img/icon.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://downbar.app/img/icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <a class="skip-link" href="#features">Skip to content</a>
 
+  <!-- ============================================================= -->
+  <!-- Inline SVG sprite: SF-Symbol-style glyphs used by the mockups -->
+  <!-- ============================================================= -->
+  <svg width="0" height="0" class="sprite" aria-hidden="true" focusable="false">
+    <defs>
+      <!-- Three ascending rounded bars — the Downbar meter icon -->
+      <symbol id="g-bars" viewBox="0 0 18 16">
+        <rect x="0"   y="9"  width="3.5" height="7"  rx="1.5" />
+        <rect x="7.25" y="5"  width="3.5" height="11" rx="1.5" />
+        <rect x="14.5" y="1"  width="3.5" height="15" rx="1.5" />
+      </symbol>
+      <!-- checkmark.circle.fill -->
+      <symbol id="g-ok" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="10" />
+        <path d="M7.5 12.4l3 3 6-6.4" fill="none" stroke="#fff" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" />
+      </symbol>
+      <!-- exclamationmark.triangle.fill -->
+      <symbol id="g-warn" viewBox="0 0 24 24">
+        <path d="M12 2.6l10.2 17.8H1.8z" />
+        <rect x="10.9" y="8.6" width="2.2" height="6.2" rx="1.1" fill="#1a1300" />
+        <circle cx="12" cy="17.4" r="1.25" fill="#1a1300" />
+      </symbol>
+      <!-- exclamationmark.octagon.fill -->
+      <symbol id="g-major" viewBox="0 0 24 24">
+        <path d="M7.6 2h8.8L22 7.6v8.8L16.4 22H7.6L2 16.4V7.6z" />
+        <rect x="10.9" y="6.3" width="2.2" height="8" rx="1.1" fill="#1a0d00" />
+        <circle cx="12" cy="17.2" r="1.25" fill="#1a0d00" />
+      </symbol>
+      <!-- xmark.octagon.fill -->
+      <symbol id="g-critical" viewBox="0 0 24 24">
+        <path d="M7.6 2h8.8L22 7.6v8.8L16.4 22H7.6L2 16.4V7.6z" />
+        <path d="M8.8 8.8l6.4 6.4M15.2 8.8l-6.4 6.4" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" />
+      </symbol>
+      <!-- arrow.clockwise -->
+      <symbol id="g-refresh" viewBox="0 0 24 24">
+        <path d="M20 12a8 8 0 1 1-2.4-5.7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+        <path d="M20 4.5V9h-4.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      </symbol>
+      <!-- gearshape -->
+      <symbol id="g-gear" viewBox="0 0 24 24">
+        <path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7z" fill="none" stroke="currentColor" stroke-width="1.8" />
+        <path d="M12 2.6l1.5 2.2 2.6-.6 1 2.5 2.6.9-.4 2.6 2 1.7-1.2 2.4 1.2 2.4-2 1.7.4 2.6-2.6.9-1 2.5-2.6-.6L12 21.4l-1.5-2.2-2.6.6-1-2.5-2.6-.9.4-2.6-2-1.7L4.3 9.7 3.1 7.3l2-1.7-.4-2.6 2.6-.9 1-2.5 2.6.6z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" />
+      </symbol>
+      <!-- power -->
+      <symbol id="g-power" viewBox="0 0 24 24">
+        <path d="M12 3v8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+        <path d="M7.5 6.5a7 7 0 1 0 9 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+      </symbol>
+      <!-- magnifyingglass -->
+      <symbol id="g-search" viewBox="0 0 24 24">
+        <circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2" />
+        <path d="M15.5 15.5L21 21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+      </symbol>
+      <!-- bell -->
+      <symbol id="g-bell" viewBox="0 0 24 24">
+        <path d="M12 3a6 6 0 0 0-6 6c0 5-2 6-2 6h16s-2-1-2-6a6 6 0 0 0-6-6z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" />
+        <path d="M10 19a2 2 0 0 0 4 0" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
+      </symbol>
+      <!-- arrow.up.forward.app (open) -->
+      <symbol id="g-open" viewBox="0 0 24 24">
+        <path d="M9 15l7-7M9.5 8H16v6.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      </symbol>
+    </defs>
+  </svg>
+
   <header class="site-header">
     <div class="wrap header-inner">
-      <a class="brand" href="#top">
-        <img src="img/icon.png" alt="" width="32" height="32" class="brand-icon" />
+      <a class="brand" href="#top" aria-label="Downbar home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 18 16" class="brand-bars"><use href="#g-bars" /></svg>
+        </span>
         <span class="brand-name">Downbar</span>
       </a>
       <nav class="site-nav" aria-label="Primary">
         <a href="#features">Features</a>
         <a href="#how">How it works</a>
+        <a href="#catalog">Catalog</a>
         <a href="https://github.com/Ntarasiuk/downbar">GitHub</a>
-        <a class="nav-cta" href="#app-store">Download</a>
+        <a class="nav-cta" href="#download">Download</a>
       </nav>
     </div>
   </header>
 
   <main id="top">
-    <!-- Hero -->
+    <!-- ===================== Hero ===================== -->
     <section class="hero">
+      <div class="hero-glow" aria-hidden="true"></div>
       <div class="wrap hero-inner">
         <div class="hero-copy">
-          <p class="eyebrow">macOS menu-bar app</p>
-          <h1>Every status page you care about, in one quiet menu-bar glance.</h1>
+          <p class="eyebrow"><span class="eyebrow-dot"></span> macOS menu-bar app</p>
+          <h1>Every status page you care about, in one&nbsp;quiet&nbsp;glance.</h1>
           <p class="lede">
             Downbar watches <strong>110+ public status pages</strong> — AI, cloud,
-            developer tools, payments and more — and tells you the moment something
-            goes down, then again when it recovers. No tabs, no dashboards, no noise.
+            developer tools, payments and more — and turns the menu-bar icon red the
+            moment something breaks. Then green again when it recovers. No tabs, no
+            dashboards, no noise.
           </p>
           <div class="hero-actions">
-            <a class="btn btn-primary" href="#app-store">
-              <span aria-hidden="true">&#63743;</span> Download on the App Store
+            <a class="btn btn-primary" href="#download">
+              <svg class="btn-apple" viewBox="0 0 16 16" aria-hidden="true"><path d="M11.04 8.49c-.02-1.7 1.39-2.51 1.45-2.55-.79-1.16-2.02-1.32-2.46-1.34-1.05-.1-2.04.61-2.57.61-.53 0-1.35-.6-2.22-.58-1.14.02-2.19.66-2.78 1.68-1.18 2.05-.3 5.08.85 6.74.56.81 1.23 1.72 2.1 1.69.84-.03 1.16-.54 2.18-.54 1.01 0 1.31.54 2.2.53.91-.02 1.49-.83 2.05-1.64.64-.94.9-1.85.92-1.9-.02-.01-1.77-.68-1.79-2.7zM9.43 3.7c.47-.57.78-1.36.69-2.15-.67.03-1.49.45-1.97 1.01-.43.5-.81 1.31-.71 2.08.75.06 1.51-.38 1.99-.94z"/></svg>
+              Download on the App Store
             </a>
             <span class="price">$2.99 · one-time · macOS 14+</span>
           </div>
+          <ul class="hero-trust">
+            <li><span class="tick"></span> No account</li>
+            <li><span class="tick"></span> No data collected</li>
+            <li><span class="tick"></span> Launch at login</li>
+          </ul>
         </div>
-        <div class="hero-art">
-          <img
-            src="img/hero-menu.png"
-            alt="Downbar's menu-bar panel listing services such as OpenAI, Cloudflare and Stripe, each with a colored health indicator."
-            width="420" height="520" loading="eager" />
+
+        <!-- The pro "screenshot": a faithful CSS recreation of the panel -->
+        <div class="hero-stage" aria-label="Downbar's menu-bar panel showing two services with issues and several operational" role="img">
+          <div class="desktop">
+            <!-- macOS menu bar -->
+            <div class="menubar">
+              <div class="mb-left">
+                <span class="mb-logo"></span>
+                <span class="mb-app">Finder</span>
+                <span class="mb-item">File</span>
+                <span class="mb-item">Edit</span>
+                <span class="mb-item">View</span>
+              </div>
+              <div class="mb-right">
+                <span class="mb-tray active" title="Downbar">
+                  <svg viewBox="0 0 18 16" class="tray-bars is-major"><use href="#g-bars" /></svg>
+                </span>
+                <span class="mb-glyph mb-batt"></span>
+                <span class="mb-glyph mb-wifi"></span>
+                <span class="mb-clock">9:41</span>
+              </div>
+            </div>
+
+            <!-- popover panel dropping from the tray icon -->
+            <div class="panel">
+              <span class="panel-notch" aria-hidden="true"></span>
+
+              <div class="panel-head">
+                <span class="status-mark is-major"><svg viewBox="0 0 24 24"><use href="#g-major" /></svg></span>
+                <span class="panel-head-text">
+                  <strong>Partial Service Outage</strong>
+                  <em>Updated in 0 seconds</em>
+                </span>
+                <span class="panel-refresh"><svg viewBox="0 0 24 24"><use href="#g-refresh" /></svg></span>
+              </div>
+              <div class="hr"></div>
+
+              <div class="panel-list">
+                <!-- Affected, worst-first -->
+                <div class="row">
+                  <span class="row-glyph is-major"><svg viewBox="0 0 24 24"><use href="#g-major" /></svg></span>
+                  <span class="row-body">
+                    <b>Google Cloud</b>
+                    <i>Network traffic to Google Clo…</i>
+                  </span>
+                  <span class="spark" data-trend="major"></span>
+                  <span class="row-age">20s ago</span>
+                </div>
+                <div class="row">
+                  <span class="row-glyph is-minor"><svg viewBox="0 0 24 24"><use href="#g-warn" /></svg></span>
+                  <span class="row-body">
+                    <b>Cloudflare</b>
+                    <i>Minor Service Outage</i>
+                  </span>
+                  <span class="spark" data-trend="warn"></span>
+                  <span class="row-age">20s ago</span>
+                </div>
+                <div class="row">
+                  <span class="row-glyph is-minor"><svg viewBox="0 0 24 24"><use href="#g-warn" /></svg></span>
+                  <span class="row-body">
+                    <b>Anthropic</b>
+                    <i>Partially Degraded Service</i>
+                  </span>
+                  <span class="spark" data-trend="degrading"></span>
+                  <span class="row-age">20s ago</span>
+                </div>
+                <div class="row">
+                  <span class="row-glyph is-minor"><svg viewBox="0 0 24 24"><use href="#g-warn" /></svg></span>
+                  <span class="row-body">
+                    <b>OpenAI</b>
+                    <i>Partial System Degradation</i>
+                  </span>
+                  <span class="spark" data-trend="major"></span>
+                  <span class="row-age">in 0s</span>
+                </div>
+
+                <div class="row-sep"></div>
+
+                <!-- Healthy -->
+                <div class="row">
+                  <span class="row-glyph is-ok"><svg viewBox="0 0 24 24"><use href="#g-ok" /></svg></span>
+                  <span class="row-body"><b>Stripe</b><i>All Systems Operational</i></span>
+                  <span class="spark" data-trend="good"></span>
+                  <span class="row-age">20s ago</span>
+                </div>
+                <div class="row">
+                  <span class="row-glyph is-ok"><svg viewBox="0 0 24 24"><use href="#g-ok" /></svg></span>
+                  <span class="row-body"><b>GitHub</b><i>All Systems Operational</i></span>
+                  <span class="spark" data-trend="good"></span>
+                  <span class="row-age">in 0s</span>
+                </div>
+                <div class="row">
+                  <span class="row-glyph is-ok"><svg viewBox="0 0 24 24"><use href="#g-ok" /></svg></span>
+                  <span class="row-body"><b>AWS</b><i>All Systems Operational</i></span>
+                  <span class="spark" data-trend="good"></span>
+                  <span class="row-age">20s ago</span>
+                </div>
+                <div class="row">
+                  <span class="row-glyph is-ok"><svg viewBox="0 0 24 24"><use href="#g-ok" /></svg></span>
+                  <span class="row-body"><b>Apple Developer</b><i>All Systems Operational</i></span>
+                  <span class="spark" data-trend="good"></span>
+                  <span class="row-age">20s ago</span>
+                </div>
+              </div>
+
+              <div class="hr"></div>
+              <div class="panel-foot">
+                <span class="foot-btn"><svg viewBox="0 0 24 24"><use href="#g-gear" /></svg> Settings</span>
+                <span class="foot-btn"><svg viewBox="0 0 24 24"><use href="#g-power" /></svg> Quit</span>
+              </div>
+            </div>
+
+            <!-- notification banner floating in -->
+            <div class="toast">
+              <span class="toast-icon"><img src="img/icon.png" alt="" width="38" height="38" /></span>
+              <span class="toast-body">
+                <b>Google Cloud</b>
+                <i>Partial outage — network traffic issues</i>
+              </span>
+              <span class="toast-meta">Downbar · now</span>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- Feature grid -->
+    <!-- ===================== Trusted-by marquee ===================== -->
+    <section class="logos" aria-label="A few of the 110+ services Downbar can watch">
+      <div class="wrap">
+        <p class="logos-label">Watches the status pages you already depend on</p>
+        <ul class="logos-row">
+          <li>OpenAI</li><li>Anthropic</li><li>AWS</li><li>Cloudflare</li>
+          <li>GitHub</li><li>Vercel</li><li>Stripe</li><li>Supabase</li>
+          <li>Google&nbsp;Cloud</li><li>Azure</li><li>Datadog</li><li>Slack</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ===================== Feature grid ===================== -->
     <section id="features" class="features" aria-labelledby="features-heading">
       <div class="wrap">
+        <p class="section-eyebrow">Why Downbar</p>
         <h2 id="features-heading">Built to stay out of your way</h2>
         <ul class="feature-grid">
           <li class="feature">
-            <h3>110+ status pages</h3>
-            <p>A curated catalog spanning AI, cloud, dev tools, payments and 8 more categories — monitored concurrently.</p>
-          </li>
-          <li class="feature">
-            <h3>Down &amp; recovery alerts</h3>
-            <p>Get notified the moment a service degrades, and again when it's back. De-flap debouncing kills the noise.</p>
-          </li>
-          <li class="feature">
+            <span class="feature-ic"><svg viewBox="0 0 18 16"><use href="#g-bars" /></svg></span>
             <h3>Health-meter icon</h3>
-            <p>The menu-bar icon aggregates everything you watch into a single at-a-glance severity color.</p>
+            <p>One three-bar glyph aggregates everything you watch into a single at-a-glance color — green, amber, red.</p>
           </li>
           <li class="feature">
+            <span class="feature-ic warn"><svg viewBox="0 0 24 24"><use href="#g-bell" /></svg></span>
+            <h3>Down &amp; recovery alerts</h3>
+            <p>Native notifications the moment a service degrades, and again when it's back. De-flap debouncing kills the noise.</p>
+          </li>
+          <li class="feature">
+            <span class="feature-ic ok"><svg viewBox="0 0 24 24"><use href="#g-ok" /></svg></span>
+            <h3>110+ status pages</h3>
+            <p>A curated catalog across AI, cloud, dev tools, payments and 10 more categories — or paste any status-page URL.</p>
+          </li>
+          <li class="feature">
+            <span class="feature-ic"><svg viewBox="0 0 24 24"><use href="#g-search" /></svg></span>
             <h3>Offline awareness</h3>
             <p>Downbar knows the difference between "your Wi-Fi dropped" and "the service is actually down."</p>
           </li>
           <li class="feature">
-            <h3>Per-service mute</h3>
-            <p>Silence the chatty ones. Keep alerts only for the services that matter to you right now.</p>
+            <span class="feature-ic"><svg viewBox="0 0 24 24"><use href="#g-bell" /></svg></span>
+            <h3>Per-service mute &amp; webhooks</h3>
+            <p>Silence the chatty ones. POST the same up/down alerts to Slack, Discord, or any endpoint.</p>
           </li>
           <li class="feature">
-            <h3>Uptime history</h3>
-            <p>A rolling record of recent checks so you can spot the flaky services before they bite.</p>
+            <span class="feature-ic ok"><svg viewBox="0 0 24 24"><use href="#g-open" /></svg></span>
+            <h3>Zero data collection</h3>
+            <p>No account, no telemetry. Nothing leaves your Mac except the status checks themselves.</p>
           </li>
         </ul>
       </div>
     </section>
 
-    <!-- How it works -->
+    <!-- ===================== How it works ===================== -->
     <section id="how" class="how" aria-labelledby="how-heading">
       <div class="wrap how-inner">
         <div class="how-copy">
-          <h2 id="how-heading">How it works</h2>
-          <p>
-            Pick the services you depend on during a quick first-launch setup. Downbar
-            polls each one's official public status feed — Statuspage, Instatus, AWS,
-            Apple, Google Cloud, Azure, or a plain website check — and folds every result
-            into one tidy menu and a single menu-bar color.
-          </p>
-          <p>
-            When something breaks, you get a notification you can click straight through
-            to the incident. When it's fixed, you get the all-clear. Reorder, mute, or set
-            a severity threshold so you only hear about what's worth hearing about.
-          </p>
+          <p class="section-eyebrow">How it works</p>
+          <h2 id="how-heading">Pick, poll, peace of mind</h2>
+          <ol class="steps">
+            <li>
+              <h3>Pick the services you depend on</h3>
+              <p>Toggle them on from the catalog during a quick first launch, or paste any Statuspage, Instatus, or plain website URL.</p>
+            </li>
+            <li>
+              <h3>Downbar polls every official feed</h3>
+              <p>Statuspage, Instatus, AWS, Apple, Google Cloud, Azure — folded into one menu and a single menu-bar color.</p>
+            </li>
+            <li>
+              <h3>You hear about it first</h3>
+              <p>A click-through notification on the way down, the all-clear on the way back. Set a severity threshold so you only hear what matters.</p>
+            </li>
+          </ol>
         </div>
+
+        <!-- Settings / catalog mockup -->
         <div class="how-art">
-          <img
-            src="img/notification.png"
-            alt="A macOS notification reading 'OpenAI is experiencing a major outage', with the Downbar app icon."
-            width="380" height="120" loading="lazy" />
+          <div class="winframe" role="img" aria-label="Downbar Settings showing the service catalog with toggle switches grouped by category">
+            <div class="win-bar">
+              <span class="traffic"><i class="r"></i><i class="y"></i><i class="g"></i></span>
+              <span class="win-tabs">
+                <span class="win-tab active">Services</span>
+                <span class="win-tab">General</span>
+              </span>
+            </div>
+            <div class="win-body">
+              <p class="win-help">Choose the services you want to monitor.</p>
+              <div class="win-search"><svg viewBox="0 0 24 24"><use href="#g-search" /></svg> Search services</div>
+
+              <div class="cat-head">AI · Models &amp; APIs <span class="cat-link">Deselect all</span></div>
+              <div class="cat-row"><span class="row-glyph is-minor sm"><svg viewBox="0 0 24 24"><use href="#g-warn" /></svg></span><span class="cat-name">Anthropic<em>status.claude.com</em></span><svg class="mute" viewBox="0 0 24 24"><use href="#g-bell" /></svg><span class="switch on"></span></div>
+              <div class="cat-row"><span class="row-glyph is-minor sm"><svg viewBox="0 0 24 24"><use href="#g-warn" /></svg></span><span class="cat-name">OpenAI<em>status.openai.com</em></span><svg class="mute" viewBox="0 0 24 24"><use href="#g-bell" /></svg><span class="switch on"></span></div>
+              <div class="cat-row"><span class="row-glyph is-ok sm"><svg viewBox="0 0 24 24"><use href="#g-ok" /></svg></span><span class="cat-name">Google AI Studio<em>aistudio.google.com</em></span><svg class="mute" viewBox="0 0 24 24"><use href="#g-bell" /></svg><span class="switch on"></span></div>
+              <div class="cat-row"><span class="row-glyph is-ok sm"><svg viewBox="0 0 24 24"><use href="#g-ok" /></svg></span><span class="cat-name">xAI<em>xai.instatus.com</em></span><svg class="mute" viewBox="0 0 24 24"><use href="#g-bell" /></svg><span class="switch on"></span></div>
+              <div class="cat-row"><span class="row-glyph is-ok sm"><svg viewBox="0 0 24 24"><use href="#g-ok" /></svg></span><span class="cat-name">Perplexity<em>status.perplexity.com</em></span><svg class="mute" viewBox="0 0 24 24"><use href="#g-bell" /></svg><span class="switch on"></span></div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- Closing CTA -->
-    <section class="cta" aria-labelledby="cta-heading">
+    <!-- ===================== Catalog band ===================== -->
+    <section id="catalog" class="catalog" aria-labelledby="catalog-heading">
+      <div class="wrap">
+        <p class="section-eyebrow">The catalog</p>
+        <h2 id="catalog-heading">110+ services across 14 categories</h2>
+        <ul class="cat-grid">
+          <li>AI · Models &amp; APIs</li>
+          <li>AI · Voice, Image &amp; Video</li>
+          <li>AI · Dev &amp; Infra</li>
+          <li>Hosting &amp; PaaS</li>
+          <li>Cloud &amp; Infra</li>
+          <li>Developer Tools</li>
+          <li>Data &amp; Backend</li>
+          <li>Identity &amp; Auth</li>
+          <li>Observability &amp; APM</li>
+          <li>Errors &amp; Crash Reporting</li>
+          <li>Incident &amp; On-Call</li>
+          <li>Payments &amp; Commerce</li>
+          <li>Communication</li>
+          <li>Productivity</li>
+        </ul>
+        <p class="cat-note">Not listed? Paste any Statuspage.io, Instatus, or website URL and Downbar watches it too.</p>
+      </div>
+    </section>
+
+    <!-- ===================== Closing CTA ===================== -->
+    <section id="download" class="cta" aria-labelledby="cta-heading">
+      <div class="cta-glow" aria-hidden="true"></div>
       <div class="wrap cta-inner">
+        <span class="cta-mark" aria-hidden="true"><svg viewBox="0 0 18 16" class="brand-bars"><use href="#g-bars" /></svg></span>
         <h2 id="cta-heading">Stop refreshing status pages.</h2>
         <p>One purchase. Every status page you watch, in your menu bar, forever.</p>
-        <a class="btn btn-primary" href="#app-store">
-          <span aria-hidden="true">&#63743;</span> Download on the App Store — $2.99
+        <a class="btn btn-primary btn-lg" href="https://apps.apple.com/app/downbar">
+          <svg class="btn-apple" viewBox="0 0 16 16" aria-hidden="true"><path d="M11.04 8.49c-.02-1.7 1.39-2.51 1.45-2.55-.79-1.16-2.02-1.32-2.46-1.34-1.05-.1-2.04.61-2.57.61-.53 0-1.35-.6-2.22-.58-1.14.02-2.19.66-2.78 1.68-1.18 2.05-.3 5.08.85 6.74.56.81 1.23 1.72 2.1 1.69.84-.03 1.16-.54 2.18-.54 1.01 0 1.31.54 2.2.53.91-.02 1.49-.83 2.05-1.64.64-.94.9-1.85.92-1.9-.02-.01-1.77-.68-1.79-2.7zM9.43 3.7c.47-.57.78-1.36.69-2.15-.67.03-1.49.45-1.97 1.01-.43.5-.81 1.31-.71 2.08.75.06 1.51-.38 1.99-.94z"/></svg>
+          Download on the App Store — $2.99
         </a>
+        <p class="cta-fine">macOS 14 Sonoma or later · Universal · ~2 MB</p>
       </div>
     </section>
   </main>
 
   <footer class="site-footer">
     <div class="wrap footer-inner">
-      <p class="footer-brand">Downbar</p>
+      <a class="brand" href="#top">
+        <span class="brand-mark sm" aria-hidden="true"><svg viewBox="0 0 18 16" class="brand-bars"><use href="#g-bars" /></svg></span>
+        <span class="brand-name">Downbar</span>
+      </a>
       <nav class="footer-nav" aria-label="Footer">
+        <a href="#features">Features</a>
+        <a href="#catalog">Catalog</a>
         <a href="https://github.com/Ntarasiuk/downbar">GitHub</a>
-        <a href="PRIVACY">Privacy</a>
-        <a href="#app-store">App Store</a>
+        <a href="/privacy">Privacy</a>
+        <a href="#download">App Store</a>
       </nav>
       <p class="footer-fine">Made for macOS. Status data belongs to the respective providers.</p>
     </div>

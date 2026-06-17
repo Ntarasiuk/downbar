@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-KMRTV61Q7Y"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-KMRTV61Q7Y');
+  </script>
+  <title>Privacy Policy — Downbar</title>
+  <meta name="description" content="Downbar collects nothing — no analytics, no telemetry, no accounts. Status checks go directly from your Mac to the public status pages you choose." />
+  <meta name="color-scheme" content="dark light" />
+  <meta name="theme-color" content="#0c0d10" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://downbar.app/privacy" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="img/apple-touch-icon.png" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="/" aria-label="Downbar home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 18 16" class="brand-bars">
+            <rect x="0" y="9" width="3.5" height="7" rx="1.5" fill="currentColor" />
+            <rect x="7.25" y="5" width="3.5" height="11" rx="1.5" fill="currentColor" />
+            <rect x="14.5" y="1" width="3.5" height="15" rx="1.5" fill="currentColor" />
+          </svg>
+        </span>
+        <span class="brand-name">Downbar</span>
+      </a>
+      <nav class="site-nav" aria-label="Primary">
+        <a href="/#features">Features</a>
+        <a href="/#catalog">Catalog</a>
+        <a class="nav-cta" href="/#download">Download</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="legal">
+    <div class="wrap legal-wrap">
+      <p class="section-eyebrow">Legal</p>
+      <h1>Privacy Policy</h1>
+      <p class="legal-updated">Last updated: 2026-06-02</p>
+
+      <p>Downbar is a macOS menu-bar app that monitors public status pages. Your privacy
+        is simple to describe because Downbar collects nothing.</p>
+
+      <h2>What Downbar collects</h2>
+      <p><strong>Nothing.</strong> Downbar has no analytics, no telemetry, no crash
+        reporting, no advertising, and no user accounts. Nothing about you, your device,
+        or your usage is collected, stored off-device, or transmitted to the developer or
+        to any third party.</p>
+
+      <h2>Network activity</h2>
+      <p>Downbar makes outbound HTTPS requests <strong>only</strong> to the public status
+        pages you choose to monitor — the same pages anyone can open in a web browser.
+        These requests are sent directly from your Mac to those status providers; they do
+        not pass through any server operated by the developer. Downbar has no backend.</p>
+      <p>Each request is an ordinary status check (for example, fetching a Statuspage.io
+        <code>summary.json</code>) and contains no personal information beyond what any
+        HTTPS request to a public website inherently includes.</p>
+
+      <h2>Local data</h2>
+      <p>Your list of monitored services and your preferences (poll interval, notification
+        settings) are stored locally on your Mac in standard app storage
+        (<code>UserDefaults</code>). This data never leaves your device.</p>
+
+      <h2>Notifications</h2>
+      <p>Notifications are generated and shown locally by macOS. They are not sent through
+        any push server or third party.</p>
+
+      <h2>Children</h2>
+      <p>Downbar does not collect data from anyone, including children.</p>
+
+      <h2>This website</h2>
+      <p>Everything above describes the Downbar <em>app</em>. This website
+        (<code>downbar.app</code>) is separate and uses Google Analytics to measure
+        aggregate visits — this involves cookies and your IP address, handled by Google
+        under <a href="https://policies.google.com/privacy">their privacy policy</a>. The
+        app itself contains no analytics and never loads this or any other tracker.</p>
+
+      <h2>Changes</h2>
+      <p>If this policy ever changes, the updated version will be published here with a new
+        "last updated" date.</p>
+
+      <h2>Contact</h2>
+      <p>Questions: <a href="mailto:ntarasiuk@gmail.com">ntarasiuk@gmail.com</a></p>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <a class="brand" href="/">
+        <span class="brand-mark sm" aria-hidden="true">
+          <svg viewBox="0 0 18 16" class="brand-bars">
+            <rect x="0" y="9" width="3.5" height="7" rx="1.5" fill="currentColor" />
+            <rect x="7.25" y="5" width="3.5" height="11" rx="1.5" fill="currentColor" />
+            <rect x="14.5" y="1" width="3.5" height="15" rx="1.5" fill="currentColor" />
+          </svg>
+        </span>
+        <span class="brand-name">Downbar</span>
+      </a>
+      <nav class="footer-nav" aria-label="Footer">
+        <a href="/#features">Features</a>
+        <a href="/#catalog">Catalog</a>
+        <a href="https://github.com/Ntarasiuk/downbar">GitHub</a>
+        <a href="/privacy">Privacy</a>
+      </nav>
+      <p class="footer-fine">Made for macOS. Status data belongs to the respective providers.</p>
+    </div>
+  </footer>
+</body>
+</html>
