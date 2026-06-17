@@ -14,52 +14,49 @@ if a longer name reads better in search.)
 
 ## Subtitle (max 30 chars)
 
-**Status pages in your menu bar**
+**Your stack. One glance.**
 
-(29 chars.)
+(23 chars.)
 
 ## Promotional text (max 170 chars)
 
-Watch the services you depend on — AWS, Stripe, GitHub, OpenAI and 110+ more —
-from your menu bar. Get notified the moment one goes down, and again when it
-recovers.
+The infrastructure your work runs on — AWS, Stripe, GitHub, OpenAI and 110+ more —
+watched from your menu bar. The instant it breaks, you know. And when it's back.
+
+(163 chars.)
 
 ## Description
 
-Downbar keeps the status of the services you depend on one glance away, right in
-your menu bar.
+Every service you depend on. One glance.
 
-Pick from a curated catalog of 110+ services across 12 categories — Developer
-Tools, Cloud & Infrastructure, Data & Backend, Communication, Productivity,
-Observability, Payments, Hosting, Identity, AI APIs and more — or paste any
-public status page URL. Downbar polls them quietly in the background and shows a
-small color-coded health meter: green when all is well, yellow for degraded,
-orange for a partial outage, red for a major one.
+Downbar lives in your menu bar and watches the infrastructure your work runs on —
+AWS, Stripe, GitHub, OpenAI, Cloudflare, and 110+ more. The moment something
+breaks, you know. The moment it recovers, you know that too.
 
-When something you monitor goes down, Downbar posts a native notification — and
-posts again when it recovers. Smart de-flapping means a momentary network blip
-won't spam you with false alarms.
+No dashboard to open. No tab to keep alive. Just a quiet meter that turns the
+instant the internet doesn't.
 
-WHY DOWNBAR
+MONITOR EVERYTHING
 
-• Live menu-bar health meter — the worst status across everything you watch, at
-  a glance.
-• 110+ curated services, organized into 12 categories with per-category "select
-  all."
-• Add any Statuspage.io, Instatus, or plain website URL.
-• Notifications on outage and on recovery.
-• Adjustable poll interval (default 5 minutes).
-• Launch at login.
+110+ services across 12 categories. Or paste any status page — Statuspage,
+Instatus, or a plain website. If it has a pulse, Downbar reads it.
 
-PRIVACY BY DESIGN
+KNOW INSTANTLY
 
-Downbar collects nothing. No accounts, no analytics, no telemetry, no tracking.
-Status checks go directly from your Mac to the public status pages you choose —
-there is no server in between. Your service list and preferences stay on your
-device.
+One color-coded meter shows the worst status across everything you watch. Green,
+all clear. Yellow, degraded. Red, down. Native notifications fire the moment a
+service drops — and again when it's back. Smart de-flapping kills the false
+alarms.
 
-Downbar lives entirely in the menu bar (no Dock icon, no window to manage). Click
-the meter icon any time to see every service and its current status.
+OWN YOUR DATA
+
+No account. No analytics. No telemetry. No server in between. Checks go straight
+from your Mac to the source. Your list never leaves your device.
+
+Downbar runs entirely in the menu bar — no Dock icon, no window to manage, nothing
+to maintain. Set it once. Trust it forever.
+
+Built for the people who keep things running.
 
 ## Keywords (max 100 chars)
 
@@ -72,15 +69,15 @@ already separate terms.)
 
 ## Support URL
 
-`https://github.com/Ntarasiuk/downbar/issues` _(private repo for now — swap for a public support site if the repo isn't made public)_
+`https://downbar.app/support` _(live — returns 200)_
 
 ## Marketing URL (optional)
 
-`https://github.com/Ntarasiuk/downbar` _(private repo for now — swap for a public landing page later)_
+`https://downbar.app`
 
 ## Privacy Policy URL
 
-`https://github.com/Ntarasiuk/downbar/blob/master/PRIVACY.md` _(required field; private repo for now — host `PRIVACY.md` at a public URL once the repo or a site is public)_
+`https://downbar.app/privacy` _(live — returns 200)_
 
 ## Category
 

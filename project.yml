@@ -21,6 +21,9 @@ settings:
     ENABLE_HARDENED_RUNTIME: YES
     CODE_SIGN_ENTITLEMENTS: Resources/Downbar.entitlements
     CODE_SIGN_STYLE: Automatic
+    # Individual enrollment, Apple ID ntarasiuk@gmail.com. Pinned so the
+    # generated project archives without setting the Team in Xcode by hand.
+    DEVELOPMENT_TEAM: CZ9PBCRGWY
 
 targets:
   Downbar:
@@ -45,6 +48,7 @@ targets:
       # itself. These mirror Resources/Info.plist (the build-app.sh bundle).
       properties:
         LSUIElement: true
+        LSApplicationCategoryType: public.app-category.developer-tools
         CFBundleIconFile: AppIcon
         CFBundleDisplayName: Downbar
         NSHighResolutionCapable: true

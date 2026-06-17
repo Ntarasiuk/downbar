@@ -17,3 +17,6 @@ Resources/*.iconset/
 
 # Screenshots output
 docs/screenshots/*.png
+
+# Release artifacts
+*.dmg
