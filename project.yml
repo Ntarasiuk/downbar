@@ -49,6 +49,7 @@ targets:
       properties:
         LSUIElement: true
         LSApplicationCategoryType: public.app-category.developer-tools
+        ITSAppUsesNonExemptEncryption: false
         CFBundleIconFile: AppIcon
         CFBundleDisplayName: Downbar
         NSHighResolutionCapable: true
