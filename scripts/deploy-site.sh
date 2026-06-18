@@ -10,7 +10,10 @@ cd "$(dirname "$0")/.."
 # Ntarasiuk@gmail.com's Cloudflare account.
 export CLOUDFLARE_ACCOUNT_ID="${CLOUDFLARE_ACCOUNT_ID:-c66b7e19a4bcf2d4461d55b6e2280ba1}"
 
-npx -y wrangler@latest pages deploy site \
+# Assets dir (site/) and the D1 binding for the waitlist function come from
+# wrangler.toml (pages_build_output_dir + [[d1_databases]]); the sibling
+# functions/ dir is bundled automatically. So no positional dir here.
+npx -y wrangler@latest pages deploy \
   --project-name=downbar \
   --branch=master \
   --commit-dirty=true

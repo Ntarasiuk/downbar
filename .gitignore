@@ -20,3 +20,6 @@ docs/screenshots/*.png
 
 # Release artifacts
 *.dmg
+
+# Wrangler local dev state
+.wrangler/

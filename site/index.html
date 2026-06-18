@@ -130,11 +130,8 @@
             dashboards, no noise.
           </p>
           <div class="hero-actions">
-            <a class="btn btn-primary" href="#download">
-              <svg class="btn-apple" viewBox="0 0 16 16" aria-hidden="true"><path d="M11.04 8.49c-.02-1.7 1.39-2.51 1.45-2.55-.79-1.16-2.02-1.32-2.46-1.34-1.05-.1-2.04.61-2.57.61-.53 0-1.35-.6-2.22-.58-1.14.02-2.19.66-2.78 1.68-1.18 2.05-.3 5.08.85 6.74.56.81 1.23 1.72 2.1 1.69.84-.03 1.16-.54 2.18-.54 1.01 0 1.31.54 2.2.53.91-.02 1.49-.83 2.05-1.64.64-.94.9-1.85.92-1.9-.02-.01-1.77-.68-1.79-2.7zM9.43 3.7c.47-.57.78-1.36.69-2.15-.67.03-1.49.45-1.97 1.01-.43.5-.81 1.31-.71 2.08.75.06 1.51-.38 1.99-.94z"/></svg>
-              Download on the App Store
-            </a>
-            <span class="price">$2.99 · one-time · macOS 14+</span>
+            <a class="btn btn-primary" href="#download">Join the waitlist</a>
+            <span class="price">Coming to the Mac App Store · $2.99 · macOS 14+</span>
           </div>
           <ul class="hero-trust">
             <li><span class="tick"></span> No account</li>
@@ -398,13 +395,23 @@
       <div class="cta-glow" aria-hidden="true"></div>
       <div class="wrap cta-inner">
         <span class="cta-mark" aria-hidden="true"><svg viewBox="0 0 18 16" class="brand-bars"><use href="#g-bars" /></svg></span>
-        <h2 id="cta-heading">Stop refreshing status pages.</h2>
-        <p>One purchase. Every status page you watch, in your menu bar, forever.</p>
-        <a class="btn btn-primary btn-lg" href="https://apps.apple.com/app/downbar">
-          <svg class="btn-apple" viewBox="0 0 16 16" aria-hidden="true"><path d="M11.04 8.49c-.02-1.7 1.39-2.51 1.45-2.55-.79-1.16-2.02-1.32-2.46-1.34-1.05-.1-2.04.61-2.57.61-.53 0-1.35-.6-2.22-.58-1.14.02-2.19.66-2.78 1.68-1.18 2.05-.3 5.08.85 6.74.56.81 1.23 1.72 2.1 1.69.84-.03 1.16-.54 2.18-.54 1.01 0 1.31.54 2.2.53.91-.02 1.49-.83 2.05-1.64.64-.94.9-1.85.92-1.9-.02-.01-1.77-.68-1.79-2.7zM9.43 3.7c.47-.57.78-1.36.69-2.15-.67.03-1.49.45-1.97 1.01-.43.5-.81 1.31-.71 2.08.75.06 1.51-.38 1.99-.94z"/></svg>
-          Download on the App Store — $2.99
-        </a>
-        <p class="cta-fine">macOS 14 Sonoma or later · Universal · ~2 MB</p>
+        <h2 id="cta-heading">Be first in line.</h2>
+        <p>Downbar is in App&nbsp;Store review. Drop your email and we’ll tell you the moment it’s live.</p>
+        <form class="waitlist" id="waitlist-form" novalidate>
+          <input
+            class="waitlist-input"
+            type="email"
+            name="email"
+            id="waitlist-email"
+            placeholder="you@example.com"
+            autocomplete="email"
+            required
+            aria-label="Email address"
+          />
+          <button class="btn btn-primary btn-lg" type="submit" id="waitlist-submit">Join the waitlist</button>
+        </form>
+        <p class="waitlist-msg" id="waitlist-msg" role="status" aria-live="polite"></p>
+        <p class="cta-fine">$2.99 · one-time · macOS 14 Sonoma or later · One launch email, no spam.</p>
       </div>
     </section>
   </main>
@@ -420,10 +427,64 @@
         <a href="#catalog">Catalog</a>
         <a href="https://github.com/Ntarasiuk/downbar">GitHub</a>
         <a href="/privacy">Privacy</a>
-        <a href="#download">App Store</a>
+        <a href="#download">Waitlist</a>
       </nav>
       <p class="footer-fine">Made for macOS. Status data belongs to the respective providers.</p>
     </div>
   </footer>
+
+  <script>
+    (function () {
+      var form = document.getElementById("waitlist-form");
+      if (!form) return;
+      var input = document.getElementById("waitlist-email");
+      var btn = document.getElementById("waitlist-submit");
+      var msg = document.getElementById("waitlist-msg");
+
+      function setMsg(text, kind) {
+        msg.textContent = text;
+        msg.className = "waitlist-msg" + (kind ? " is-" + kind : "");
+      }
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        var email = (input.value || "").trim();
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          setMsg("Please enter a valid email address.", "error");
+          input.focus();
+          return;
+        }
+        btn.disabled = true;
+        var original = btn.textContent;
+        btn.textContent = "Joining…";
+        setMsg("", "");
+        fetch("/api/waitlist", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ email: email }),
+        })
+          .then(function (r) {
+            return r.json().then(function (d) {
+              return { ok: r.ok, d: d };
+            });
+          })
+          .then(function (res) {
+            if (res.ok && res.d.ok) {
+              form.hidden = true;
+              setMsg("You’re on the list. We’ll email you the moment Downbar hits the App Store.", "ok");
+            } else {
+              setMsg(res.d.error || "Something went wrong — please try again.", "error");
+              btn.disabled = false;
+              btn.textContent = original;
+            }
+          })
+          .catch(function () {
+            setMsg("Network error — please try again.", "error");
+            btn.disabled = false;
+            btn.textContent = original;
+          });
+      });
+    })();
+  </script>
 </body>
 </html>

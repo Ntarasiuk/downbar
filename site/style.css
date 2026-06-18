@@ -394,6 +394,49 @@ h1, h2, h3 { line-height: 1.12; letter-spacing: -0.02em; margin: 0; }
 .cta .btn { margin-top: 8px; }
 .cta-fine { color: var(--text-faint) !important; font-size: 14px !important; }
 
+/* Waitlist form */
+.waitlist {
+  margin-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  width: 100%;
+  max-width: 480px;
+}
+.waitlist-input {
+  flex: 1 1 240px;
+  min-width: 0;
+  padding: 16px 18px;
+  font-size: 16px;
+  font-family: inherit;
+  color: var(--text);
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  transition: border-color .12s ease, box-shadow .12s ease;
+}
+.waitlist-input::placeholder { color: var(--text-faint); }
+.waitlist-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 28%, transparent);
+}
+.waitlist .btn { flex: 0 0 auto; cursor: pointer; }
+.waitlist .btn:disabled { opacity: .6; cursor: default; transform: none; }
+.waitlist-msg {
+  min-height: 1.2em;
+  margin: 0;
+  font-size: 15px;
+  color: var(--text-dim);
+}
+.waitlist-msg.is-ok { color: var(--good); }
+.waitlist-msg.is-error { color: var(--bad); }
+@media (max-width: 520px) {
+  .waitlist { flex-direction: column; }
+  .waitlist .btn { width: 100%; justify-content: center; }
+}
+
 /* ---------- Legal pages ---------- */
 .legal { padding: 56px 0 80px; }
 .legal-wrap { max-width: 760px; }
