@@ -251,23 +251,28 @@ private struct CappedScrollView<Content: View>: NSViewRepresentable {
             if let token { NotificationCenter.default.removeObserver(token) }
         }
     }
+}
 
-    final class IntrinsicScrollView: NSScrollView {
-        let maxHeight: CGFloat
+/// `NSScrollView` that reports its document view's height as its intrinsic
+/// height, capped at `maxHeight`. This is the core of the `MenuBarExtra` list
+/// fix: it gives the AppKit layout system a real, bounded height where a
+/// SwiftUI `ScrollView` reports none. Top-level (not nested in the generic
+/// `CappedScrollView`) so it stays non-generic and unit-testable.
+final class IntrinsicScrollView: NSScrollView {
+    let maxHeight: CGFloat
 
-        init(maxHeight: CGFloat) {
-            self.maxHeight = maxHeight
-            super.init(frame: .zero)
-        }
+    init(maxHeight: CGFloat) {
+        self.maxHeight = maxHeight
+        super.init(frame: .zero)
+    }
 
-        @available(*, unavailable)
-        required init?(coder: NSCoder) { fatalError() }
+    @available(*, unavailable)
+    required init?(coder: NSCoder) { fatalError() }
 
-        override var intrinsicContentSize: NSSize {
-            guard let doc = documentView else { return super.intrinsicContentSize }
-            let contentH = doc.intrinsicContentSize.height
-            let height = contentH > 0 ? min(contentH, maxHeight) : NSView.noIntrinsicMetric
-            return NSSize(width: NSView.noIntrinsicMetric, height: height)
-        }
+    override var intrinsicContentSize: NSSize {
+        guard let doc = documentView else { return super.intrinsicContentSize }
+        let contentH = doc.intrinsicContentSize.height
+        let height = contentH > 0 ? min(contentH, maxHeight) : NSView.noIntrinsicMetric
+        return NSSize(width: NSView.noIntrinsicMetric, height: height)
     }
 }
