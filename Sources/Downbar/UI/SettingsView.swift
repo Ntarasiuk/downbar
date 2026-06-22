@@ -437,7 +437,7 @@ private struct GeneralTab: View {
                     Button {
                         showingRegions = true
                     } label: {
-                        LabeledContent("AWS regions", value: regionsSummary)
+                        LabeledContent("AWS Regions", value: regionsSummary)
                             .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)

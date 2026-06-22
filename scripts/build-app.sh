@@ -31,10 +31,13 @@ else
   echo "warning: Resources/AppIcon.icns missing — run scripts/make-icon.sh" >&2
 fi
 
-echo "==> Ad-hoc codesign (sandboxed, hardened runtime)"
+echo "==> Ad-hoc codesign (hardened runtime; dev entitlements)"
+# Local ad-hoc builds use empty dev entitlements — an ad-hoc signature can't
+# establish a sandbox container, so the App Store sandbox lives in
+# Resources/Downbar.entitlements (applied by the Xcode/MAS build via project.yml).
 codesign --force --deep \
   --options runtime \
-  --entitlements Resources/Downbar.entitlements \
+  --entitlements Resources/Downbar-dev.entitlements \
   --sign - "$APP_DIR"
 
 echo "==> Done: ${APP_DIR}"

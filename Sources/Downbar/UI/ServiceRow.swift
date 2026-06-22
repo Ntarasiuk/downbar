@@ -76,8 +76,8 @@ struct ServiceRow: View {
     /// One-line VoiceOver summary for the whole row.
     private var accessibilityLabel: String {
         var parts = [service.name, description]
-        if isMaintenance { parts.append(String(localized: "under maintenance")) }
-        if !ageText.isEmpty { parts.append(String(localized: "updated \(ageText)")) }
+        if isMaintenance { parts.append(String(localized: "Under Maintenance").lowercased()) }
+        if !ageText.isEmpty { parts.append(String(localized: "Updated \(ageText)").lowercased()) }
         return parts.joined(separator: ", ")
     }
 

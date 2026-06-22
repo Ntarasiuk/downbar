@@ -61,28 +61,27 @@ struct MenuContent: View {
 
     private var serviceList: some View {
         let groups = groupedServices
-        return ScrollView {
-            VStack(spacing: 2) {
-                ForEach(groups.affected) { service in
-                    ServiceRow(service: service,
-                               result: monitor.result(for: service),
-                               history: monitor.history(for: service))
-                }
-                if !groups.affected.isEmpty && !groups.healthy.isEmpty {
-                    Divider()
-                        .padding(.horizontal, 8)
-                        .padding(.vertical, 5)
-                        .accessibilityHidden(true)
-                }
-                ForEach(groups.healthy) { service in
-                    ServiceRow(service: service,
-                               result: monitor.result(for: service),
-                               history: monitor.history(for: service))
-                }
+        let content = VStack(spacing: 2) {
+            ForEach(groups.affected) { service in
+                ServiceRow(service: service,
+                           result: monitor.result(for: service),
+                           history: monitor.history(for: service))
             }
-            .padding(6)
+            if !groups.affected.isEmpty && !groups.healthy.isEmpty {
+                Divider()
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 5)
+                    .accessibilityHidden(true)
+            }
+            ForEach(groups.healthy) { service in
+                ServiceRow(service: service,
+                           result: monitor.result(for: service),
+                           history: monitor.history(for: service))
+            }
         }
-        .frame(maxHeight: 480)
+        .padding(6)
+
+        return CappedScrollView(maxHeight: 480) { content }
     }
 
     /// Services with an active issue (minor/major/critical) sorted worst-first,
@@ -185,5 +184,90 @@ private struct FooterButton: View {
         .buttonStyle(.plain)
         .onHover { hovering = $0 }
         .accessibilityLabel(title)
+    }
+}
+
+/// An `NSScrollView`-backed scroller that reports its intrinsic content size
+/// (capped at `maxHeight`) to the AppKit layout system. This avoids the
+/// SwiftUI `ScrollView` intrinsic-size regression inside `MenuBarExtra(.window)`
+/// on recent macOS versions.
+private struct CappedScrollView<Content: View>: NSViewRepresentable {
+    let maxHeight: CGFloat
+    @ViewBuilder let content: Content
+
+    func makeNSView(context: Context) -> IntrinsicScrollView {
+        let hosting = NSHostingView(rootView: content)
+        hosting.translatesAutoresizingMaskIntoConstraints = false
+
+        let scrollView = IntrinsicScrollView(maxHeight: maxHeight)
+        scrollView.documentView = hosting
+        scrollView.hasVerticalScroller = true
+        scrollView.hasHorizontalScroller = false
+        scrollView.drawsBackground = false
+        scrollView.automaticallyAdjustsContentInsets = false
+        scrollView.scrollerStyle = .overlay
+
+        // Pin the hosting view's width to the scroll view's content width
+        // so it wraps vertically instead of growing horizontally.
+        NSLayoutConstraint.activate([
+            hosting.leadingAnchor.constraint(equalTo: scrollView.contentView.leadingAnchor),
+            hosting.trailingAnchor.constraint(equalTo: scrollView.contentView.trailingAnchor),
+        ])
+
+        // Observe content size changes to update intrinsic size.
+        context.coordinator.observe(hosting: hosting, scrollView: scrollView)
+
+        return scrollView
+    }
+
+    func updateNSView(_ scrollView: IntrinsicScrollView, context: Context) {
+        (scrollView.documentView as? NSHostingView<Content>)?.rootView = content
+    }
+
+    func makeCoordinator() -> Coordinator { Coordinator() }
+
+    final class Coordinator: NSObject {
+        private var token: Any?
+
+        @MainActor
+        func observe(hosting: NSView, scrollView: IntrinsicScrollView) {
+            hosting.postsFrameChangedNotifications = true
+            token = NotificationCenter.default.addObserver(
+                forName: NSView.frameDidChangeNotification,
+                object: hosting,
+                queue: .main
+            ) { [weak scrollView] _ in
+                // Delivered on .main → already on the main actor; assert it so
+                // the MainActor-isolated invalidate call is statically safe.
+                MainActor.assumeIsolated {
+                    scrollView?.invalidateIntrinsicContentSize()
+                }
+            }
+            // Trigger an initial layout.
+            scrollView.invalidateIntrinsicContentSize()
+        }
+
+        deinit {
+            if let token { NotificationCenter.default.removeObserver(token) }
+        }
+    }
+
+    final class IntrinsicScrollView: NSScrollView {
+        let maxHeight: CGFloat
+
+        init(maxHeight: CGFloat) {
+            self.maxHeight = maxHeight
+            super.init(frame: .zero)
+        }
+
+        @available(*, unavailable)
+        required init?(coder: NSCoder) { fatalError() }
+
+        override var intrinsicContentSize: NSSize {
+            guard let doc = documentView else { return super.intrinsicContentSize }
+            let contentH = doc.intrinsicContentSize.height
+            let height = contentH > 0 ? min(contentH, maxHeight) : NSView.noIntrinsicMetric
+            return NSSize(width: NSView.noIntrinsicMetric, height: height)
+        }
     }
 }
