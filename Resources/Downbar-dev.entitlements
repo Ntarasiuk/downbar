@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- Entitlements for the LOCAL ad-hoc build only (scripts/build-app.sh).
+     Empty on purpose: an ad-hoc signature has no provisioning profile, so the
+     App Sandbox can't establish a container and the locally-run app misbehaves.
+     The Mac App Store build uses Resources/Downbar.entitlements (sandbox +
+     network.client) via project.yml — keep these two in sync intentionally. -->
+<plist version="1.0">
+<dict/>
+</plist>
