@@ -1,13 +1,26 @@
 import Foundation
 
-/// Reads Apple's developer system-status feed:
-///   GET https://www.apple.com/support/systemstatus/data/developer/system_status_en_US.js
-/// The body is JSONP: `jsonCallback({ "services": [ { serviceName, events: [...] } ] })`.
-/// We strip the wrapper and treat any service with a non-empty `events` array
-/// as currently affected. Severity is inferred from the event's `eventStatus`
-/// / `messageType` (Apple uses "Resolved", "Issue", "Maintenance", …).
+/// Reads one of Apple's two system-status feeds. Both expose the same shape —
+/// `{ "services": [ { serviceName, events: [...] } ] }` — but in different
+/// envelopes: the developer feed is JSONP (`jsonCallback({ ... })`) while the
+/// consumer feed is bare JSON. `extractJSON` handles either.
+///   • developer (App Store Connect, Xcode Cloud, TestFlight, notarization, …):
+///     https://www.apple.com/support/systemstatus/data/developer/system_status_en_US.js
+///   • consumer (iCloud, App Store, Apple Music, Maps, …):
+///     https://www.apple.com/support/systemstatus/data/system_status_en_US.js
+/// The feed is chosen from the service's catalog URL host (see `feed(for:)`).
+/// Any service with a non-empty `events` array is treated as currently
+/// affected. Severity is inferred from the event's `eventStatus` /
+/// `messageType` (Apple uses "Resolved", "Issue", "Maintenance", …).
 struct AppleProvider: StatusProvider {
-    private static let feed = URL(string: "https://www.apple.com/support/systemstatus/data/developer/system_status_en_US.js")!
+    private static let developerFeed = URL(string: "https://www.apple.com/support/systemstatus/data/developer/system_status_en_US.js")!
+    private static let consumerFeed = URL(string: "https://www.apple.com/support/systemstatus/data/system_status_en_US.js")!
+
+    /// Picks the developer dashboard for `developer.apple.com` catalog entries,
+    /// otherwise the consumer status page.
+    private static func feed(for service: Service) -> URL {
+        (service.url.host()?.contains("developer.apple.com") == true) ? developerFeed : consumerFeed
+    }
 
     private struct Payload: Decodable {
         let services: [ServiceEntry]
@@ -31,11 +44,11 @@ struct AppleProvider: StatusProvider {
 
     func fetch(_ service: Service) async -> ServiceStatusResult {
         do {
-            let (data, response) = try await session.data(from: Self.feed)
+            let (data, response) = try await session.data(from: Self.feed(for: service))
             guard let http = response as? HTTPURLResponse, (200..<300).contains(http.statusCode) else {
                 return unknown(service, "HTTP \((response as? HTTPURLResponse)?.statusCode ?? -1)")
             }
-            guard let json = Self.stripJSONP(data) else {
+            guard let json = Self.extractJSON(data) else {
                 return unknown(service, "Unexpected format")
             }
             let payload = try JSONDecoder().decode(Payload.self, from: json)
@@ -59,15 +72,17 @@ struct AppleProvider: StatusProvider {
         }
     }
 
-    /// Strips the `jsonCallback( ... )` wrapper, returning the inner JSON bytes.
-    private static func stripJSONP(_ data: Data) -> Data? {
+    /// Returns the JSON object bytes from either feed: bare JSON is passed
+    /// through, and a JSONP wrapper (`callback({ ... });`) is unwrapped by
+    /// slicing from the first `{` to the last `}`. Slicing on braces rather than
+    /// the callback's parens is robust to parens inside event message text.
+    private static func extractJSON(_ data: Data) -> Data? {
         guard let text = String(data: data, encoding: .utf8),
-              let open = text.firstIndex(of: "("),
-              let close = text.lastIndex(of: ")"), open < close else {
+              let open = text.firstIndex(of: "{"),
+              let close = text.lastIndex(of: "}"), open < close else {
             return nil
         }
-        let inner = text[text.index(after: open)..<close]
-        return inner.data(using: .utf8)
+        return text[open...close].data(using: .utf8)
     }
 
     private static func indicator(for event: Event) -> Indicator {

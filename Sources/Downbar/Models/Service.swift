@@ -10,6 +10,7 @@ enum ProviderKind: String, Codable, CaseIterable, Identifiable {
     case apple
     case gcp
     case azure
+    case xai
 
     var id: String { rawValue }
 
@@ -22,6 +23,7 @@ enum ProviderKind: String, Codable, CaseIterable, Identifiable {
         case .apple: return "Apple System Status"
         case .gcp: return "Google Cloud Status"
         case .azure: return "Azure Status"
+        case .xai: return "xAI Status"
         }
     }
 

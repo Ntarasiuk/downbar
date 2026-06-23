@@ -51,6 +51,7 @@ enum ProviderRegistry {
         case .apple: return AppleProvider()
         case .gcp: return GCPProvider()
         case .azure: return AzureProvider()
+        case .xai: return XAIProvider()
         }
     }
 }

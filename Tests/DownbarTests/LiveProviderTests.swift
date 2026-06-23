@@ -43,15 +43,26 @@ final class LiveProviderTests: XCTestCase {
         await assertParses(StatuspageProvider(), service)
     }
 
-    // MARK: - Instatus (xAI)
+    // MARK: - Instatus
 
     func testInstatusLive() async throws {
         try requireLive()
         let service = Service(
-            name: "xAI",
-            url: URL(string: "https://status.x.ai")!,
+            name: "Perplexity",
+            url: URL(string: "https://status.perplexity.com")!,
             provider: .instatus)
         await assertParses(InstatusProvider(), service)
+    }
+
+    // MARK: - xAI (custom RSS feed)
+
+    func testXAILive() async throws {
+        try requireLive()
+        let service = Service(
+            name: "xAI",
+            url: URL(string: "https://status.x.ai/")!,
+            provider: .xai)
+        await assertParses(XAIProvider(), service)
     }
 
     // MARK: - AWS Health (fixed feed)
@@ -72,6 +83,15 @@ final class LiveProviderTests: XCTestCase {
         let service = Service(
             name: "Apple Developer",
             url: URL(string: "https://developer.apple.com/system-status/")!,
+            provider: .apple)
+        await assertParses(AppleProvider(), service)
+    }
+
+    func testAppleConsumerLive() async throws {
+        try requireLive()
+        let service = Service(
+            name: "Apple System Status",
+            url: URL(string: "https://www.apple.com/support/systemstatus/")!,
             provider: .apple)
         await assertParses(AppleProvider(), service)
     }
