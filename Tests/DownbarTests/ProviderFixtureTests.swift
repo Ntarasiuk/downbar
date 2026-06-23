@@ -218,6 +218,117 @@ final class ProviderFixtureTests: XCTestCase {
         XCTAssertEqual(r.indicator, .minor)
     }
 
+    /// The consumer feed is bare JSON (no `jsonCallback(...)` wrapper); it must
+    /// parse just like the JSONP developer feed.
+    func testAppleConsumerBareJSON() async {
+        MockURLProtocol.respond(#"""
+        {"drMessage":null,"services":[
+          {"serviceName":"App Store","redirectUrl":null,"events":[]},
+          {"serviceName":"iCloud Mail","redirectUrl":null,"events":[{"eventStatus":"Ongoing Issue","messageType":null,"statusType":null}]}
+        ],"drpost":false}
+        """#)
+        let provider = AppleProvider(session: MockURLProtocol.makeSession())
+        let r = await provider.fetch(service("https://www.apple.com/support/systemstatus/", .apple))
+        XCTAssertEqual(r.indicator, .minor)
+        XCTAssertTrue(r.description.contains("iCloud Mail"))
+    }
+
+    /// The catalog ships two Apple entries that must hit different feeds:
+    /// `developer.apple.com` → the developer dashboard, everything else → the
+    /// consumer status page. Both feeds share the same JSONP shape.
+    func testAppleFeedRoutingByHost() async {
+        /// Thread-safe capture for the `@Sendable` mock responder.
+        final class Captured: @unchecked Sendable {
+            private let lock = NSLock()
+            private var value: URL?
+            var url: URL? {
+                get { lock.withLock { value } }
+                set { lock.withLock { value = newValue } }
+            }
+        }
+
+        func requestedFeed(for urlString: String) async -> String? {
+            let captured = Captured()
+            MockURLProtocol.responder = { req in
+                captured.url = req.url
+                return (Data(#"jsonCallback({ "services": [] })"#.utf8), 200)
+            }
+            let provider = AppleProvider(session: MockURLProtocol.makeSession())
+            _ = await provider.fetch(service(urlString, .apple))
+            return captured.url?.absoluteString
+        }
+
+        let dev = await requestedFeed(for: "https://developer.apple.com/system-status/")
+        XCTAssertEqual(dev, "https://www.apple.com/support/systemstatus/data/developer/system_status_en_US.js")
+
+        let consumer = await requestedFeed(for: "https://www.apple.com/support/systemstatus/")
+        XCTAssertEqual(consumer, "https://www.apple.com/support/systemstatus/data/system_status_en_US.js")
+    }
+
+    // MARK: - xAI (custom RSS history feed)
+
+    /// A feed of only RESOLVED incidents → operational.
+    func testXAIAllResolvedIsOperational() async {
+        MockURLProtocol.respond(#"""
+        <?xml version="1.0" encoding="UTF-8" ?>
+        <rss version="2.0"><channel>
+          <item>
+            <title>[API] Increased Error rate</title>
+            <pubDate>Wed, 17 Jun 2026 12:13:15 GMT</pubDate>
+            <description><![CDATA[ <h3>Status: RESOLVED</h3> <p>Severity: available</p> ]]></description>
+          </item>
+        </channel></rss>
+        """#)
+        let provider = XAIProvider(session: MockURLProtocol.makeSession())
+        let r = await provider.fetch(service("https://status.x.ai/", .xai))
+        XCTAssertEqual(r.indicator, .none)
+    }
+
+    /// A fixed clock so the recency guard is deterministic.
+    private func fixedNow() -> Date {
+        var c = DateComponents()
+        c.year = 2026; c.month = 6; c.day = 17; c.hour = 18; c.minute = 0; c.second = 0
+        c.timeZone = TimeZone(identifier: "GMT")
+        return Calendar(identifier: .gregorian).date(from: c)!
+    }
+
+    func testXAIActiveRecentIncidentIsDetected() {
+        let xml = #"""
+        <rss><channel>
+          <item>
+            <title>[API] Partial Outage on Image Generation</title>
+            <pubDate>Wed, 17 Jun 2026 12:13:15 GMT</pubDate>
+            <description><![CDATA[ <h3>Status: INVESTIGATING</h3> <p>Severity: partial outage</p> ]]></description>
+          </item>
+        </channel></rss>
+        """#
+        let active = XAIProvider.activeIncidents(in: xml, now: fixedNow())
+        XCTAssertEqual(active.count, 1)
+        XCTAssertEqual(active.first?.indicator, .major)   // "partial"/"outage" → major
+        XCTAssertTrue(active.first?.title.contains("Image Generation") ?? false)
+    }
+
+    /// A non-resolved incident whose newest update is old is treated as stale.
+    func testXAIStaleUnresolvedIsIgnored() {
+        let xml = #"""
+        <rss><channel>
+          <item>
+            <title>[API] Old never-closed blip</title>
+            <pubDate>Sat, 07 Jun 2026 12:13:15 GMT</pubDate>
+            <description><![CDATA[ <h3>Status: INVESTIGATING</h3> <p>Severity: degraded</p> ]]></description>
+          </item>
+        </channel></rss>
+        """#
+        XCTAssertTrue(XAIProvider.activeIncidents(in: xml, now: fixedNow()).isEmpty)
+    }
+
+    func testXAISeverityMapping() {
+        XCTAssertEqual(XAIProvider.indicator(severity: "major outage", title: "x"), .critical)
+        XCTAssertEqual(XAIProvider.indicator(severity: "available", title: "Outage on API"), .major)
+        XCTAssertEqual(XAIProvider.indicator(severity: "degraded", title: "Elevated errors"), .minor)
+        XCTAssertEqual(XAIProvider.indicator(severity: "maintenance", title: "Scheduled work"), .minor)
+    }
+
     // MARK: - GCP (incidents.json, active = no `end`)
 
     func testGCPNoActiveIncidents() async {
