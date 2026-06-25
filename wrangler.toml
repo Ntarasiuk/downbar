@@ -1,11 +1,8 @@
 # Cloudflare Pages config for the downbar.app landing site.
-# Provides the D1 binding the waitlist Pages Function (functions/api/waitlist.js)
-# needs. `wrangler pages deploy site` (see scripts/deploy-site.sh) reads this.
+# Static site (no build step); served from site/. Deploys on push to master
+# via the Pages Git integration. The launch waitlist + its D1 binding were
+# removed once Downbar shipped on the App Store (2026-06-25); historical
+# signups remain in the downbar-waitlist D1 database.
 name = "downbar"
 compatibility_date = "2026-06-18"
 pages_build_output_dir = "site"
-
-[[d1_databases]]
-binding = "DB"
-database_name = "downbar-waitlist"
-database_id = "6d44ea2c-486c-46ac-9684-e138b47acd79"
