@@ -329,6 +329,60 @@ final class ProviderFixtureTests: XCTestCase {
         XCTAssertEqual(XAIProvider.indicator(severity: "maintenance", title: "Scheduled work"), .minor)
     }
 
+    // MARK: - Status.io (scrape pageId → api.status.io summary)
+
+    /// Two-request flow: the page HTML carries `pageId`, then api.status.io
+    /// returns the summary. The mock branches on the request URL.
+    private func statusIOResponder(pageHTML: String, apiJSON: String) -> @Sendable (URLRequest) -> (Data, Int) {
+        { req in
+            if (req.url?.absoluteString ?? "").contains("api.status.io") {
+                return (Data(apiJSON.utf8), 200)
+            }
+            return (Data(pageHTML.utf8), 200)
+        }
+    }
+
+    func testStatusIOOperational() async {
+        MockURLProtocol.responder = statusIOResponder(
+            pageHTML: "<html><script>var pageId = '5b36dc6502d06804c08349f7';</script></html>",
+            apiJSON: #"{"result":{"status_overall":{"status":"Operational","status_code":100}}}"#)
+        let r = await StatusIOProvider(session: MockURLProtocol.makeSession())
+            .fetch(service("https://status.gitlab.com", .statusio))
+        XCTAssertEqual(r.indicator, .none)
+    }
+
+    func testStatusIODisruptionIsCritical() async {
+        MockURLProtocol.responder = statusIOResponder(
+            pageHTML: "<html>pageId = \"deadbeef\"</html>",
+            apiJSON: #"{"result":{"status_overall":{"status":"Service Disruption","status_code":400}}}"#)
+        let r = await StatusIOProvider(session: MockURLProtocol.makeSession())
+            .fetch(service("https://status.gitlab.com", .statusio))
+        XCTAssertEqual(r.indicator, .critical)
+        XCTAssertTrue(r.description.contains("Disruption"))
+    }
+
+    func testStatusIOMissingPageIdIsUnknown() async {
+        MockURLProtocol.respond("<html>no page id here</html>")
+        let r = await StatusIOProvider(session: MockURLProtocol.makeSession())
+            .fetch(service("https://status.gitlab.com", .statusio))
+        XCTAssertEqual(r.indicator, .unknown)
+    }
+
+    func testStatusIOPageIdExtraction() {
+        XCTAssertEqual(StatusIOProvider.pageId(in: "x var pageId = 'abc123' y"), "abc123")
+        XCTAssertEqual(StatusIOProvider.pageId(in: "pageId=\"deadBEEF\""), "deadBEEF")
+        XCTAssertNil(StatusIOProvider.pageId(in: "no page id present"))
+        XCTAssertNil(StatusIOProvider.pageId(in: "pageId = 'not-hex-zzz'"))
+    }
+
+    func testStatusIOCodeMapping() {
+        XCTAssertEqual(StatusIOProvider.indicator(code: 100, status: "Operational"), .none)
+        XCTAssertEqual(StatusIOProvider.indicator(code: 200, status: "Degraded Performance"), .minor)
+        XCTAssertEqual(StatusIOProvider.indicator(code: 300, status: "Partial Service Disruption"), .major)
+        XCTAssertEqual(StatusIOProvider.indicator(code: 400, status: "Service Disruption"), .critical)
+        XCTAssertEqual(StatusIOProvider.indicator(code: nil, status: "All Systems Operational"), .none)
+    }
+
     // MARK: - GCP (incidents.json, active = no `end`)
 
     func testGCPNoActiveIncidents() async {

@@ -95,6 +95,7 @@ enum ServiceCatalog {
 
         // Developer Tools
         e("GitHub", "https://www.githubstatus.com", .statuspage, "Developer Tools"),
+        e("GitLab", "https://status.gitlab.com", .statusio, "Developer Tools"),
         e("Bitbucket", "https://bitbucket.status.atlassian.com", .statuspage, "Developer Tools"),
         e("CircleCI", "https://status.circleci.com", .statuspage, "Developer Tools"),
         e("Travis CI", "https://www.traviscistatus.com", .statuspage, "Developer Tools"),
@@ -106,6 +107,12 @@ enum ServiceCatalog {
         e("RubyGems", "https://status.rubygems.org", .statuspage, "Developer Tools"),
         e("Temporal", "https://status.temporal.io", .statuspage, "Developer Tools"),
         e("LaunchDarkly", "https://status.launchdarkly.com", .statuspage, "Developer Tools"),
+        e("Docker Hub", "https://www.dockerstatus.com", .statusio, "Developer Tools"),
+        e("Buildkite", "https://www.buildkitestatus.com", .statuspage, "Developer Tools"),
+        e("Codecov", "https://status.codecov.com", .statuspage, "Developer Tools"),
+        e("JFrog", "https://status.jfrog.io", .statuspage, "Developer Tools"),
+        e("Snyk", "https://status.snyk.io", .statuspage, "Developer Tools"),
+        e("Expo", "https://status.expo.dev", .statuspage, "Developer Tools"),
 
         // Data & Backend
         e("Supabase", "https://status.supabase.com", .statuspage, "Data & Backend"),

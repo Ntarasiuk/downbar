@@ -65,6 +65,26 @@ final class LiveProviderTests: XCTestCase {
         await assertParses(XAIProvider(), service)
     }
 
+    // MARK: - Status.io (GitLab, Docker Hub)
+
+    func testStatusIOGitLabLive() async throws {
+        try requireLive()
+        let service = Service(
+            name: "GitLab",
+            url: URL(string: "https://status.gitlab.com")!,
+            provider: .statusio)
+        await assertParses(StatusIOProvider(), service)
+    }
+
+    func testStatusIODockerLive() async throws {
+        try requireLive()
+        let service = Service(
+            name: "Docker Hub",
+            url: URL(string: "https://www.dockerstatus.com")!,
+            provider: .statusio)
+        await assertParses(StatusIOProvider(), service)
+    }
+
     // MARK: - AWS Health (fixed feed)
 
     func testAWSLive() async throws {

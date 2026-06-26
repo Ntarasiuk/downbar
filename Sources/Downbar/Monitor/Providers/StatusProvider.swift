@@ -52,6 +52,7 @@ enum ProviderRegistry {
         case .gcp: return GCPProvider()
         case .azure: return AzureProvider()
         case .xai: return XAIProvider()
+        case .statusio: return StatusIOProvider()
         }
     }
 }
