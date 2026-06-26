@@ -54,6 +54,10 @@ targets:
         CFBundleDisplayName: Downbar
         NSHighResolutionCapable: true
         LSMinimumSystemVersion: "14.0"
+        # Track the build settings so the bundle version can't drift from
+        # MARKETING_VERSION again (XcodeGen would otherwise default these to 1.0).
+        CFBundleShortVersionString: "$(MARKETING_VERSION)"
+        CFBundleVersion: "$(CURRENT_PROJECT_VERSION)"
     settings:
       base:
         ASSETCATALOG_COMPILER_APPICON_NAME: ""
