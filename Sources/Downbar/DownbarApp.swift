@@ -16,7 +16,7 @@ struct DownbarApp: App {
             MenuContent(monitor: monitor)
                 .task { presentOnboardingIfNeeded() }
         } label: {
-            Image(nsImage: MenuBarIconRenderer.nsImage(for: monitor.aggregate))
+            MenuBarLabel(monitor: monitor)
         }
         .menuBarExtraStyle(.window)
 
@@ -38,5 +38,30 @@ struct DownbarApp: App {
         UserDefaults.standard.set(true, forKey: Self.onboardedKey)
         openWindow(id: "onboarding")
         NSApp.activate(ignoringOtherApps: true)
+    }
+}
+
+/// The status-item icon. Also hosts the launch hook for screenshot automation:
+/// start the app with `DOWNBAR_OPEN_SETTINGS=1` and Settings opens immediately,
+/// so `scripts/screenshots.sh` doesn't need UI-scripting (accessibility) rights.
+/// The label view is the only view that exists at launch in a MenuBarExtra app,
+/// which is why the hook lives here.
+private struct MenuBarLabel: View {
+    @ObservedObject var monitor: StatusMonitor
+    @Environment(\.openSettings) private var openSettings
+
+    var body: some View {
+        Image(nsImage: MenuBarIconRenderer.nsImage(for: monitor.aggregate))
+            .task {
+                guard ProcessInfo.processInfo.environment["DOWNBAR_OPEN_SETTINGS"] == "1" else { return }
+                openSettings()
+                // Give the Settings scene a beat to create its window, then
+                // bring it to the front — an LSUIElement app isn't frontmost
+                // at launch, so the window would otherwise open unfocused.
+                try? await Task.sleep(nanoseconds: 500_000_000)
+                NSApp.activate(ignoringOtherApps: true)
+                NSApp.windows.first { $0.isVisible && !$0.title.isEmpty }?
+                    .makeKeyAndOrderFront(nil)
+            }
     }
 }

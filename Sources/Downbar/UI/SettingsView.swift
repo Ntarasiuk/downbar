@@ -7,12 +7,21 @@ import ServiceManagement
 struct SettingsView: View {
     @ObservedObject var monitor: StatusMonitor
 
+    private enum Tab { case services, general }
+
+    /// Selectable so the screenshot hook can open straight to a given tab
+    /// (`DOWNBAR_SETTINGS_TAB=general`); defaults to Services otherwise.
+    @State private var tab: Tab =
+        ProcessInfo.processInfo.environment["DOWNBAR_SETTINGS_TAB"] == "general" ? .general : .services
+
     var body: some View {
-        TabView {
+        TabView(selection: $tab) {
             ServicesTab(monitor: monitor)
                 .tabItem { Label("Services", systemImage: "square.grid.2x2") }
+                .tag(Tab.services)
             GeneralTab(monitor: monitor)
                 .tabItem { Label("General", systemImage: "gearshape") }
+                .tag(Tab.general)
         }
         .frame(width: 500, height: 580)
     }
