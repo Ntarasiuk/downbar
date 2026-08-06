@@ -464,12 +464,54 @@ h1, h2, h3 { line-height: 1.12; letter-spacing: -0.02em; margin: 0; }
   padding: 1px 6px; border-radius: 5px;
 }
 
+/* ---------- Changelog ---------- */
+.changelog .release {
+  margin-top: 40px; padding-top: 32px;
+  border-top: 1px solid var(--border-soft);
+}
+.release-head { display: flex; align-items: baseline; flex-wrap: wrap; gap: 12px; }
+.changelog .release-head h2 { margin: 0; font-size: 24px; font-weight: 700; letter-spacing: -0.01em; }
+.release-pill {
+  align-self: center;
+  font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;
+  padding: 3px 10px; border-radius: 999px;
+}
+.release-pill.latest {
+  color: var(--good);
+  background: color-mix(in srgb, var(--good) 14%, transparent);
+}
+.release-pill.soon {
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+}
+.release-date { color: var(--text-faint); font-size: 14px; }
+.release-note { margin-top: 10px; }
+.changelog .change-kind {
+  margin: 20px 0 8px; font-size: 13px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.1em;
+}
+.change-kind.added { color: var(--good); }
+.change-kind.changed { color: var(--accent); }
+.change-kind.fixed { color: var(--major); }
+.change-list { margin: 0; padding: 0; list-style: none; }
+.change-list li {
+  position: relative; padding-left: 18px; margin-bottom: 8px;
+  color: var(--text-dim); font-size: 16px;
+}
+.change-list li::before {
+  content: ""; position: absolute; left: 0; top: 0.62em;
+  width: 6px; height: 6px; border-radius: 50%;
+  background: color-mix(in srgb, var(--text-faint) 70%, transparent);
+}
+
 /* ---------- Footer ---------- */
 .site-footer { border-top: 1px solid var(--border-soft); padding: 44px 0; }
 .footer-inner { display: flex; flex-wrap: wrap; align-items: center; gap: 18px 28px; justify-content: space-between; }
 .footer-nav { display: flex; flex-wrap: wrap; gap: 22px; }
 .footer-nav a { color: var(--text-dim); font-size: 15px; }
 .footer-nav a:hover { color: var(--text); }
+.ph-badge { display: inline-flex; line-height: 0; }
+.ph-badge img { display: block; height: 44px; width: auto; }
 .footer-fine { margin: 0; color: var(--text-faint); font-size: 13px; flex-basis: 100%; }
 
 /* ---------- Responsive ---------- */

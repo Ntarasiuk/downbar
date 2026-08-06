@@ -8,6 +8,11 @@
 /img/*
   Cache-Control: public, max-age=31536000, immutable
 
+# Versioned DMG downloads — filename changes each release, so cache forever
+/dl/*
+  Cache-Control: public, max-age=31536000, immutable
+  Content-Type: application/octet-stream
+
 /style.css
   Cache-Control: public, max-age=3600
 

@@ -13,7 +13,7 @@
     gtag('config', 'G-KMRTV61Q7Y');
   </script>
   <title>Downbar — Every status page, right in your menu bar</title>
-  <meta name="description" content="Downbar is a $2.99 macOS menu-bar app that watches 110+ public status pages — AI, cloud, dev tools, payments — and tells you the moment something goes down, and the moment it recovers." />
+  <meta name="description" content="Downbar is a free macOS menu-bar app that watches 110+ public status pages — AI, cloud, dev tools, payments — and tells you the moment something goes down, and the moment it recovers." />
   <meta name="color-scheme" content="dark light" />
   <meta name="theme-color" content="#0c0d10" />
   <link rel="canonical" href="https://downbar.app/" />
@@ -130,11 +130,12 @@
             dashboards, no noise.
           </p>
           <div class="hero-actions">
-            <a class="btn btn-primary" href="https://apps.apple.com/us/app/downbar/id6781379131?mt=12">
+            <a class="btn btn-primary" href="/dl/latest" download
+               onclick="gtag('event','file_download',{file_name:'Downbar-latest.dmg',link_url:'/dl/latest'})">
               <svg class="btn-apple" viewBox="0 0 16 16" aria-hidden="true"><path d="M11.04 8.49c-.02-1.7 1.39-2.51 1.45-2.55-.79-1.16-2.02-1.32-2.46-1.34-1.05-.1-2.04.61-2.57.61-.53 0-1.35-.6-2.22-.58-1.14.02-2.19.66-2.78 1.68-1.18 2.05-.3 5.08.85 6.74.56.81 1.23 1.72 2.1 1.69.84-.03 1.16-.54 2.18-.54 1.01 0 1.31.54 2.2.53.91-.02 1.49-.83 2.05-1.64.64-.94.9-1.85.92-1.9-.02-.01-1.77-.68-1.79-2.7zM9.43 3.7c.47-.57.78-1.36.69-2.15-.67.03-1.49.45-1.97 1.01-.43.5-.81 1.31-.71 2.08.75.06 1.51-.38 1.99-.94z"/></svg>
-              Download on the App Store
+              Download for macOS
             </a>
-            <span class="price">$2.99 · one-time · macOS 14+</span>
+            <span class="price">Free · v1.0.1 · macOS 14+ · Apple silicon</span>
           </div>
           <ul class="hero-trust">
             <li><span class="tick"></span> No account</li>
@@ -420,12 +421,13 @@
       <div class="wrap cta-inner">
         <span class="cta-mark" aria-hidden="true"><svg viewBox="0 0 18 16" class="brand-bars"><use href="#g-bars" /></svg></span>
         <h2 id="cta-heading">Stop refreshing status pages.</h2>
-        <p>One purchase. Every status page you watch, in your menu bar, forever.</p>
-        <a class="btn btn-primary btn-lg" href="https://apps.apple.com/us/app/downbar/id6781379131?mt=12">
+        <p>Free download. Every status page you watch, in your menu bar, forever.</p>
+        <a class="btn btn-primary btn-lg" href="/dl/latest" download
+           onclick="gtag('event','file_download',{file_name:'Downbar-latest.dmg',link_url:'/dl/latest'})">
           <svg class="btn-apple" viewBox="0 0 16 16" aria-hidden="true"><path d="M11.04 8.49c-.02-1.7 1.39-2.51 1.45-2.55-.79-1.16-2.02-1.32-2.46-1.34-1.05-.1-2.04.61-2.57.61-.53 0-1.35-.6-2.22-.58-1.14.02-2.19.66-2.78 1.68-1.18 2.05-.3 5.08.85 6.74.56.81 1.23 1.72 2.1 1.69.84-.03 1.16-.54 2.18-.54 1.01 0 1.31.54 2.2.53.91-.02 1.49-.83 2.05-1.64.64-.94.9-1.85.92-1.9-.02-.01-1.77-.68-1.79-2.7zM9.43 3.7c.47-.57.78-1.36.69-2.15-.67.03-1.49.45-1.97 1.01-.43.5-.81 1.31-.71 2.08.75.06 1.51-.38 1.99-.94z"/></svg>
-          Download on the App Store — $2.99
+          Download Downbar — Free
         </a>
-        <p class="cta-fine">macOS 14 Sonoma or later · Universal</p>
+        <p class="cta-fine">macOS 14 Sonoma or later · Apple silicon · Direct .dmg download</p>
       </div>
     </section>
   </main>
@@ -439,9 +441,13 @@
       <nav class="footer-nav" aria-label="Footer">
         <a href="#features">Features</a>
         <a href="#catalog">Catalog</a>
+        <a href="/changelog">Changelog</a>
         <a href="/privacy">Privacy</a>
-        <a href="https://apps.apple.com/us/app/downbar/id6781379131?mt=12">App Store</a>
+        <a href="/dl/latest" download>Download</a>
       </nav>
+      <a class="ph-badge" href="https://www.producthunt.com/products/downbar?embed=true&amp;utm_source=badge-featured&amp;utm_medium=badge&amp;utm_campaign=badge-downbar" target="_blank" rel="noopener noreferrer">
+        <img alt="Downbar - Know the moment a service breaks, and the moment it's back | Product Hunt" width="250" height="54" src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1183271&amp;theme=light&amp;t=1782777510726" />
+      </a>
       <p class="footer-fine">Made for macOS. Status data belongs to the respective providers.</p>
     </div>
   </footer>

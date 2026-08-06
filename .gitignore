@@ -18,8 +18,9 @@ Resources/*.iconset/
 # Screenshots output
 docs/screenshots/*.png
 
-# Release artifacts
+# Release artifacts (but ship the site's downloadable DMG with the Pages deploy)
 *.dmg
+!site/dl/*.dmg
 
 # Wrangler local dev state
 .wrangler/

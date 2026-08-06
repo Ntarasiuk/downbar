@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-KMRTV61Q7Y"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-KMRTV61Q7Y');
+  </script>
+  <title>Changelog — Downbar</title>
+  <meta name="description" content="Release notes for Downbar, the free macOS menu-bar app that watches 110+ public status pages. What's new, what changed, and what's coming next." />
+  <meta name="color-scheme" content="dark light" />
+  <meta name="theme-color" content="#0c0d10" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://downbar.app/changelog" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="img/apple-touch-icon.png" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="/" aria-label="Downbar home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 18 16" class="brand-bars">
+            <rect x="0" y="9" width="3.5" height="7" rx="1.5" fill="currentColor" />
+            <rect x="7.25" y="5" width="3.5" height="11" rx="1.5" fill="currentColor" />
+            <rect x="14.5" y="1" width="3.5" height="15" rx="1.5" fill="currentColor" />
+          </svg>
+        </span>
+        <span class="brand-name">Downbar</span>
+      </a>
+      <nav class="site-nav" aria-label="Primary">
+        <a href="/#features">Features</a>
+        <a href="/#catalog">Catalog</a>
+        <a class="nav-cta" href="/#download">Download</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="legal changelog">
+    <div class="wrap legal-wrap">
+      <p class="section-eyebrow">Release notes</p>
+      <h1>Changelog</h1>
+      <p class="legal-updated">Everything that ships in Downbar, newest first.</p>
+
+      <section class="release" aria-labelledby="rel-101">
+        <header class="release-head">
+          <h2 id="rel-101">1.0.1</h2>
+          <span class="release-pill latest">Latest</span>
+          <time class="release-date" datetime="2026-08-06">August 6, 2026</time>
+        </header>
+        <p class="release-note"><a href="/dl/Downbar-1.0.1.dmg" download
+          onclick="gtag('event','file_download',{file_name:'Downbar-1.0.1.dmg',link_url:'/dl/Downbar-1.0.1.dmg'})">Download the .dmg</a> — free, macOS 14+.</p>
+        <h3 class="change-kind added">Added</h3>
+        <ul class="change-list">
+          <li>Add from a Codebase — Settings generates a copyable AI prompt for Claude Code, Cursor, or any coding agent: point it at a project and it finds the hosted services the code depends on — plus your own production and deployed URLs — and adds them to Downbar automatically.</li>
+          <li>Editable config — <code>services.json</code> opens in your editor straight from Settings, forgives hand-written entries, and hot-reloads the moment you save. No restart needed.</li>
+          <li>Uptime history — a per-service rolling record of recent checks, surfaced in the menu.</li>
+          <li>Accessibility pass: VoiceOver labels, Dynamic Type support, and improved contrast throughout.</li>
+          <li>Distinct styling for scheduled-maintenance states, separating them visually from outages.</li>
+        </ul>
+        <h3 class="change-kind changed">Changed</h3>
+        <ul class="change-list">
+          <li>User-facing strings extracted for translation, paving the way for localization.</li>
+        </ul>
+      </section>
+
+      <section class="release" aria-labelledby="rel-100">
+        <header class="release-head">
+          <h2 id="rel-100">1.0.0</h2>
+          <time class="release-date" datetime="2026-06-02">June 2, 2026</time>
+        </header>
+        <p class="release-note">The first release.</p>
+        <h3 class="change-kind added">Added</h3>
+        <ul class="change-list">
+          <li>Curated catalog of 110+ public status pages across 14 categories — AI, cloud, developer tools, payments, and more — monitored concurrently from the menu bar.</li>
+          <li>Seven status-page adapters behind a single model: Statuspage.io, Instatus, AWS Health, Apple System Status, Google Cloud, Azure, and a generic website uptime check.</li>
+          <li>Down and recovery notifications with de-flap debouncing, so a momentary blip doesn't spam alerts.</li>
+          <li>Offline awareness: the app distinguishes "no internet here" from "the service is down" and reflects it in the menu-bar icon.</li>
+          <li>Per-service mute to silence notifications for noisy or low-priority services.</li>
+          <li>Severity threshold so notifications only fire at or above a chosen impact level.</li>
+          <li>Notification deep-link: clicking an alert opens the relevant service's status page.</li>
+          <li>Incident detail in the menu, showing the active incident title alongside status.</li>
+          <li>Drag-to-reorder services in the panel.</li>
+          <li>First-launch onboarding to pick the services you care about.</li>
+        </ul>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <a class="brand" href="/">
+        <span class="brand-mark sm" aria-hidden="true">
+          <svg viewBox="0 0 18 16" class="brand-bars">
+            <rect x="0" y="9" width="3.5" height="7" rx="1.5" fill="currentColor" />
+            <rect x="7.25" y="5" width="3.5" height="11" rx="1.5" fill="currentColor" />
+            <rect x="14.5" y="1" width="3.5" height="15" rx="1.5" fill="currentColor" />
+          </svg>
+        </span>
+        <span class="brand-name">Downbar</span>
+      </a>
+      <nav class="footer-nav" aria-label="Footer">
+        <a href="/#features">Features</a>
+        <a href="/#catalog">Catalog</a>
+        <a href="/changelog">Changelog</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/dl/latest" download>Download</a>
+      </nav>
+      <p class="footer-fine">Made for macOS. Status data belongs to the respective providers.</p>
+    </div>
+  </footer>
+</body>
+</html>

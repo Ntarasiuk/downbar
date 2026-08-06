@@ -1,0 +1,4 @@
+# Stable download URL — the buttons link here so they never go stale.
+# 302 (not 301/immutable) so browsers and the CDN re-check the hop; bump the
+# target to the new versioned DMG on each release.
+/dl/latest /dl/Downbar-1.0.1.dmg 302
