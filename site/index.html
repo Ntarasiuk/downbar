@@ -415,6 +415,52 @@
       </div>
     </section>
 
+    <!-- ===================== AI prompt ===================== -->
+    <section id="agent" class="agent" aria-labelledby="agent-heading">
+      <div class="wrap agent-inner">
+        <div class="agent-copy">
+          <p class="section-eyebrow">Add from a codebase</p>
+          <h2 id="agent-heading">Or let your coding agent fill the list</h2>
+          <ol class="steps">
+            <li>
+              <h3>Copy the prompt</h3>
+              <p>Settings → Services → Add from a Codebase generates a prompt with Downbar's full catalog and your config path baked in.</p>
+            </li>
+            <li>
+              <h3>Paste it into any agent</h3>
+              <p>Claude Code, Cursor, Codex — opened in any repo. It scans your dependencies, deploy config, and env vars, and verifies every status page before adding it.</p>
+            </li>
+            <li>
+              <h3>Watch the list build itself</h3>
+              <p>Everything the code depends on — plus your own production URLs — lands in <code>services.json</code>, plain JSON that Downbar hot-reloads the moment it's saved. Edit it by hand in your IDE anytime.</p>
+            </li>
+          </ol>
+        </div>
+
+        <!-- Agent terminal mockup -->
+        <div class="agent-art">
+          <div class="winframe" role="img" aria-label="A coding agent terminal scanning a repository and adding the services it depends on to Downbar">
+            <div class="win-bar">
+              <span class="traffic"><i class="r"></i><i class="y"></i><i class="g"></i></span>
+              <span class="term-title">claude — my-app</span>
+            </div>
+            <div class="term-body">
+              <p><span class="term-prompt">›</span> <span class="term-paste">[Downbar prompt pasted]</span></p>
+              <p class="term-dim">Scanning package.json, .env.example, fly.toml…</p>
+              <p class="term-dim">Found 9 hosted services — verifying status pages…</p>
+              <p class="term-add">+ Stripe <em>www.stripestatus.com</em></p>
+              <p class="term-add">+ Supabase <em>status.supabase.com</em></p>
+              <p class="term-add">+ Resend <em>resend-status.com</em></p>
+              <p class="term-add">+ Sentry <em>status.sentry.io</em></p>
+              <p class="term-add">+ Fly.io <em>status.flyio.net</em></p>
+              <p class="term-add">+ my-app.com (prod) <em>website ping</em></p>
+              <p class="term-done">✓ services.json updated — Downbar reloaded instantly</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ===================== Closing CTA ===================== -->
     <section id="download" class="cta" aria-labelledby="cta-heading">
       <div class="cta-glow" aria-hidden="true"></div>
