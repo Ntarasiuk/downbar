@@ -89,4 +89,5 @@ this same target in an Xcode archive target for submission.
 
 ## License
 
-Copyright © Nathan Tarasiuk. All rights reserved.
+The code is MIT-licensed — see [LICENSE](LICENSE). The "Downbar" name and the
+app icon are not covered by the license and remain © Nathan Tarasiuk.
