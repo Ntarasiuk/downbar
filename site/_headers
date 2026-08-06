@@ -20,6 +20,15 @@
   ! Cache-Control
   Cache-Control: public, max-age=300
 
+# The curl|sh installer (also rewritten from /install) — plain text so
+# browsers render it, short cache so a fixed script rolls out fast.
+/install
+  Content-Type: text/plain; charset=utf-8
+  Cache-Control: public, max-age=300
+/install.sh
+  Content-Type: text/plain; charset=utf-8
+  Cache-Control: public, max-age=300
+
 /style.css
   Cache-Control: public, max-age=3600
 

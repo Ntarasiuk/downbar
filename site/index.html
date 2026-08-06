@@ -140,8 +140,13 @@
           <div class="install-alt">
             <span class="install-alt-label">or from the terminal:</span>
             <button class="install-cmd" type="button" aria-label="Copy the Homebrew install command"
-              onclick="navigator.clipboard.writeText('brew install --cask ntarasiuk/tap/downbar');var s=this.querySelector('.cmd-copy');s.textContent='copied!';setTimeout(function(){s.textContent='copy';},1400);gtag('event','brew_command_copy')">
+              data-cmd="brew install --cask ntarasiuk/tap/downbar" onclick="copyCmd(this)">
               <code>brew install --cask ntarasiuk/tap/downbar</code>
+              <span class="cmd-copy" aria-hidden="true">copy</span>
+            </button>
+            <button class="install-cmd" type="button" aria-label="Copy the shell install command"
+              data-cmd="curl -fsSL https://downbar.app/install | sh" onclick="copyCmd(this)">
+              <code>curl -fsSL https://downbar.app/install | sh</code>
               <span class="cmd-copy" aria-hidden="true">copy</span>
             </button>
           </div>
@@ -483,8 +488,13 @@
         </a>
         <div class="install-alt centered">
           <button class="install-cmd" type="button" aria-label="Copy the Homebrew install command"
-            onclick="navigator.clipboard.writeText('brew install --cask ntarasiuk/tap/downbar');var s=this.querySelector('.cmd-copy');s.textContent='copied!';setTimeout(function(){s.textContent='copy';},1400);gtag('event','brew_command_copy')">
+            data-cmd="brew install --cask ntarasiuk/tap/downbar" onclick="copyCmd(this)">
             <code>brew install --cask ntarasiuk/tap/downbar</code>
+            <span class="cmd-copy" aria-hidden="true">copy</span>
+          </button>
+          <button class="install-cmd" type="button" aria-label="Copy the shell install command"
+            data-cmd="curl -fsSL https://downbar.app/install | sh" onclick="copyCmd(this)">
+            <code>curl -fsSL https://downbar.app/install | sh</code>
             <span class="cmd-copy" aria-hidden="true">copy</span>
           </button>
         </div>
@@ -514,5 +524,14 @@
     </div>
   </footer>
 
+  <script>
+    function copyCmd(btn) {
+      navigator.clipboard.writeText(btn.dataset.cmd);
+      var s = btn.querySelector('.cmd-copy');
+      s.textContent = 'copied!';
+      setTimeout(function () { s.textContent = 'copy'; }, 1400);
+      gtag('event', 'install_command_copy', { command: btn.dataset.cmd.split(' ')[0] });
+    }
+  </script>
 </body>
 </html>

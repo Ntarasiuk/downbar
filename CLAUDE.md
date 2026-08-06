@@ -23,6 +23,9 @@ a release/site update touches the download:
 Notes:
 - `*.dmg` is gitignored **except** `site/dl/*.dmg` — the site DMG must be
   committed so the Pages Git integration deploys it.
+- `site/install.sh` is the `curl -fsSL https://downbar.app/install | sh`
+  installer (`/install` is a 200 rewrite in `site/_redirects`). It installs
+  from `/dl/latest`, so it needs **no** per-release bump.
 - The DMG must be Developer ID–signed and notarized before it opens cleanly on
   other Macs; `make-dmg.sh` wraps whatever signature `Downbar.app` already has
   (ad-hoc by default — Gatekeeper rejects that). See RELEASE.md.
