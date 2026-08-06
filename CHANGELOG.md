@@ -7,7 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-08-06
+
 ### Added
+- Add from a Codebase: Settings now generates a copyable AI prompt that any
+  coding agent (Claude Code, Cursor, …) can run inside a project to find the
+  hosted services the code depends on — plus the project's own production and
+  deployed URLs — and add them to Downbar automatically.
+- `services.json` is now a supported editing surface: pretty-printed, opened in
+  your editor from Settings, tolerant of hand-written entries (`id` and
+  `provider` optional, malformed entries skipped instead of discarding the
+  list), and hot-reloaded the moment an external edit is saved — no restart.
 - Uptime history: per-service rolling record of recent checks, surfaced in the menu.
 - Accessibility pass: VoiceOver labels, Dynamic Type support, and improved contrast throughout.
 - Distinct styling for scheduled-maintenance states, separating them visually from outages.
@@ -35,5 +45,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - First-launch onboarding to pick the services you care about.
 - App Store packaging as a $2.99 LSUIElement menu-bar app (macOS 14+).
 
-[Unreleased]: https://github.com/Ntarasiuk/downbar/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/Ntarasiuk/downbar/compare/v1.0.1...HEAD
+[1.0.1]: https://github.com/Ntarasiuk/downbar/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/Ntarasiuk/downbar/releases/tag/v1.0.0

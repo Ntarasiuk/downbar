@@ -48,4 +48,19 @@ struct Service: Codable, Identifiable, Hashable {
         self.url = url
         self.provider = provider
     }
+
+    /// Lenient decoding so `services.json` stays hand- and AI-editable:
+    /// `id` and `provider` are optional (a new entry is just name + url),
+    /// and a malformed `id` becomes a fresh one instead of an error.
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = (try? c.decode(UUID.self, forKey: .id)) ?? UUID()
+        self.name = try c.decode(String.self, forKey: .name)
+        self.url = try c.decode(URL.self, forKey: .url)
+        self.provider = (try? c.decode(ProviderKind.self, forKey: .provider)) ?? .statuspage
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case id, name, url, provider
+    }
 }

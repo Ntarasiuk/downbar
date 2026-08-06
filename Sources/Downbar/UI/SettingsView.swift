@@ -1,3 +1,4 @@
+import AppKit
 import SwiftUI
 import ServiceManagement
 
@@ -79,6 +80,10 @@ private struct ServicesTab: View {
             Divider()
             CustomAddForm(monitor: monitor)
                 .padding(16)
+            Divider()
+            AgentImportRow(monitor: monitor)
+                .padding(.horizontal, 16)
+                .padding(.vertical, 12)
         }
     }
 
@@ -347,6 +352,49 @@ private struct CustomAddForm: View {
 
         monitor.add(Service(name: name.trimmingCharacters(in: .whitespaces), url: url, provider: provider))
         name = ""; urlText = ""; provider = .statuspage
+    }
+}
+
+/// Lets an AI coding agent fill the service list from a real codebase: copy a
+/// generated prompt into Claude Code / Cursor / etc., or open `services.json`
+/// directly in an editor. The app hot-reloads the file on save.
+private struct AgentImportRow: View {
+    @ObservedObject var monitor: StatusMonitor
+    @State private var copied = false
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Add from a Codebase").font(.system(size: 12, weight: .semibold))
+            HStack(spacing: 8) {
+                Button {
+                    copyPrompt()
+                } label: {
+                    Label(copied ? "Copied" : "Copy AI Prompt",
+                          systemImage: copied ? "checkmark" : "doc.on.doc")
+                        .frame(minWidth: 110)
+                }
+                Button("Edit services.json") { openConfig() }
+                Spacer()
+            }
+            Text("Paste the prompt into Claude Code, Cursor, or any coding agent opened in a project — it finds the services the code depends on, plus your own production URLs, and adds them here. The config is plain JSON; edits apply instantly.")
+                .font(.system(size: 11))
+                .foregroundStyle(.secondary)
+        }
+    }
+
+    private func copyPrompt() {
+        // The prompt tells the agent to edit this file, so it must exist.
+        ServiceStore.shared.ensureOnDisk(monitor.services)
+        let pasteboard = NSPasteboard.general
+        pasteboard.clearContents()
+        pasteboard.setString(AgentPrompt.text(), forType: .string)
+        copied = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) { copied = false }
+    }
+
+    private func openConfig() {
+        ServiceStore.shared.ensureOnDisk(monitor.services)
+        NSWorkspace.shared.open(ServiceStore.shared.fileURL)
     }
 }
 

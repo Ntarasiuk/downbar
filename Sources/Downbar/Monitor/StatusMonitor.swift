@@ -31,6 +31,7 @@ final class StatusMonitor: ObservableObject {
     private let store: ServiceStore
     private let history: StatusHistory
     private var timer: Timer?
+    private var configWatcher: FileWatcher?
 
     private let pathMonitor = NWPathMonitor()
     private let pathQueue = DispatchQueue(label: "downbar.network-path")
@@ -44,6 +45,14 @@ final class StatusMonitor: ObservableObject {
         self.services = store.load()
         let saved = UserDefaults.standard.double(forKey: Self.intervalKey)
         self.refreshInterval = saved > 0 ? saved : Self.defaultInterval
+
+        // services.json is a supported editing surface (IDE, AI agents): make
+        // sure it exists on disk, then hot-reload whenever something else
+        // writes it.
+        store.ensureOnDisk(services)
+        configWatcher = FileWatcher(url: store.fileURL) { [weak self] in
+            Task { @MainActor in self?.reloadFromDisk() }
+        }
 
         // Begin polling immediately so the menu-bar icon reflects live status
         // at launch, before the dropdown is ever opened.
@@ -210,6 +219,46 @@ final class StatusMonitor: ObservableObject {
     }
 
     // MARK: - Editing
+
+    /// Re-reads `services.json` after an external edit (an IDE, an AI agent
+    /// following the copied prompt) and adopts the differences. Entries that
+    /// match a currently monitored service — by id, or by provider + URL when
+    /// the file has no id — keep their identity so history and mutes survive.
+    /// A no-op when the file matches what's already in memory, which is how
+    /// the app's own saves are told apart from external ones.
+    func reloadFromDisk() {
+        let disk = store.load()
+        guard disk != services else { return }
+
+        var usedIDs = Set<UUID>()
+        let merged = disk.map { entry -> Service in
+            var entry = entry
+            let match = services.first { $0.id == entry.id }
+                ?? services.first {
+                    $0.provider == entry.provider
+                        && $0.url.absoluteString.lowercased() == entry.url.absoluteString.lowercased()
+                }
+            if let match { entry.id = match.id }
+            // A hand-duplicated line can repeat an id; identity must stay unique.
+            if !usedIDs.insert(entry.id).inserted { entry.id = UUID() }
+            return entry
+        }
+
+        let oldIDs = Set(services.map(\.id))
+        for id in oldIDs.subtracting(merged.map(\.id)) {
+            results[id] = nil
+            lastKnownIndicator[id] = nil
+        }
+        let added = merged.filter { !oldIDs.contains($0.id) }
+        services = merged
+        // Write back the merged list so hand-added entries gain their ids and
+        // the file returns to canonical formatting.
+        persist()
+
+        Task {
+            for service in added { await refreshOne(service) }
+        }
+    }
 
     func add(_ service: Service) {
         services.append(service)
