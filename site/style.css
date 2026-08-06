@@ -149,6 +149,28 @@ h1, h2, h3 { line-height: 1.12; letter-spacing: -0.02em; margin: 0; }
 .lede strong { color: var(--text); font-weight: 640; }
 .hero-actions { margin-top: 30px; display: flex; flex-wrap: wrap; align-items: center; gap: 16px; }
 .price { color: var(--text-dim); font-size: 14px; }
+
+/* "or from the terminal" Homebrew one-liner */
+.install-alt { margin-top: 16px; display: flex; align-items: center; flex-wrap: wrap; gap: 12px; }
+.install-alt.centered { justify-content: center; }
+.install-alt-label { color: var(--text-faint); font-size: 14px; }
+.install-cmd {
+  display: inline-flex; align-items: center; gap: 12px;
+  font: inherit; cursor: pointer;
+  background: color-mix(in srgb, var(--bg-elev) 80%, transparent);
+  border: 1px solid var(--border); border-radius: 10px;
+  padding: 9px 14px; color: var(--text-dim);
+  transition: border-color .12s ease, color .12s ease;
+}
+.install-cmd:hover { color: var(--text); border-color: color-mix(in srgb, var(--accent) 55%, var(--border)); }
+.install-cmd code {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 13.5px; white-space: nowrap;
+}
+.cmd-copy {
+  font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--accent);
+}
 .hero-trust { list-style: none; margin: 22px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 18px; }
 .hero-trust li { display: flex; align-items: center; gap: 7px; font-size: 14px; color: var(--text-dim); }
 .tick { width: 16px; height: 16px; border-radius: 50%; background: color-mix(in srgb, var(--good) 22%, transparent); position: relative; flex: none; }

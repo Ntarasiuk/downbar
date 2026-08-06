@@ -15,6 +15,10 @@ a release/site update touches the download:
    `site/_redirects` (all download buttons point at `/dl/latest`, so they never
    go stale), the version string in `site/index.html`, and the "Latest" release
    section (with its versioned download link) in `site/changelog.html`.
+4. Bump the Homebrew cask (`~/code/homebrew-tap/Casks/downbar.rb`, GitHub
+   `Ntarasiuk/homebrew-tap`): set `version` and `sha256` (`shasum -a 256` of the
+   new site DMG), commit, push. The site's copyable install command is
+   `brew install --cask ntarasiuk/tap/downbar`.
 
 Notes:
 - `*.dmg` is gitignored **except** `site/dl/*.dmg` — the site DMG must be
