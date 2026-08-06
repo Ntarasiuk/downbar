@@ -30,15 +30,11 @@ account to create, no data leaving your Mac except the checks themselves.
 
 ## Screenshots
 
-> _Placeholder — generate with `scripts/screenshots.sh`._
+<img src="docs/screenshots/panel.png" alt="The Downbar menu panel showing a partial service outage: OpenAI and Google Cloud degraded, Cloudflare minor, the rest operational with green sparklines" width="580">
 
-| Menu panel (light) | Menu panel (dark) |
+| Services | General |
 | --- | --- |
-| ![Panel light](docs/screenshots/panel-light.png) | ![Panel dark](docs/screenshots/panel-dark.png) |
-
-| Settings (light) | Settings (dark) |
-| --- | --- |
-| ![Settings light](docs/screenshots/settings-light.png) | ![Settings dark](docs/screenshots/settings-dark.png) |
+| ![Settings — pick services to monitor](docs/screenshots/settings-services.png) | ![Settings — refresh interval, notifications, webhook](docs/screenshots/settings-general.png) |
 
 ## How it works
 

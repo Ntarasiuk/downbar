@@ -15,8 +15,12 @@ Resources/*.iconset/
 # macOS
 .DS_Store
 
-# Screenshots output
+# App Store screenshot captures (scripts/screenshots.sh output) stay untracked,
+# but the cropped README shots ship with the repo.
 docs/screenshots/*.png
+!docs/screenshots/panel.png
+!docs/screenshots/settings-services.png
+!docs/screenshots/settings-general.png
 
 # Release artifacts (but ship the site's downloadable DMG with the Pages deploy)
 *.dmg
