@@ -237,6 +237,11 @@ private struct MuteButton: View {
         .foregroundStyle(muted ? AnyShapeStyle(.tint) : AnyShapeStyle(.secondary))
         .help(muted ? "Notifications muted" : "Mute notifications")
         .accessibilityLabel(muted ? "Unmute notifications" : "Mute notifications")
+        // The same service can show a bell in several rows; keep them in sync.
+        .onReceive(NotificationCenter.default.publisher(for: UserDefaults.didChangeNotification)) { _ in
+            let current = NotificationPrefs.isMuted(serviceID)
+            if current != muted { muted = current }
+        }
     }
 }
 
@@ -260,16 +265,26 @@ private struct CustomRow: View {
             }
             Spacer()
             MuteButton(serviceID: service.id)
-            Button(role: .destructive) {
-                monitor.remove(service)
-            } label: {
-                Image(systemName: "trash")
-            }
-            .buttonStyle(.borderless)
-            .foregroundStyle(.secondary)
-            .help("Remove \(service.name)")
-            .accessibilityLabel("Remove \(service.name)")
+            RemoveButton(monitor: monitor, service: service)
         }
+    }
+}
+
+/// Trash button that stops monitoring a service.
+private struct RemoveButton: View {
+    let monitor: StatusMonitor
+    let service: Service
+
+    var body: some View {
+        Button(role: .destructive) {
+            monitor.remove(service)
+        } label: {
+            Image(systemName: "trash")
+        }
+        .buttonStyle(.borderless)
+        .foregroundStyle(.secondary)
+        .help("Remove \(service.name)")
+        .accessibilityLabel("Remove \(service.name)")
     }
 }
 
@@ -288,13 +303,13 @@ private struct ReorderRow: View {
                 .accessibilityHidden(true)
             Text(service.name).font(.system(size: 13))
             Spacer()
+            MuteButton(serviceID: service.id)
+            RemoveButton(monitor: monitor, service: service)
             Image(systemName: "line.3.horizontal")
                 .font(.system(size: 12))
                 .foregroundStyle(.tertiary)
                 .accessibilityHidden(true)
         }
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel(service.name)
     }
 }
 
