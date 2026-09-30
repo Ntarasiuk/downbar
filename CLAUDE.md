@@ -23,6 +23,9 @@ a release/site update touches the download:
 Notes:
 - `*.dmg` is gitignored **except** `site/dl/*.dmg` — the site DMG must be
   committed so the Pages Git integration deploys it.
+- Never request a new `/dl/*.dmg` URL before the Pages deploy is live: until
+  then the edge serves the HTML fallback, and `/dl/*` caches it for a year
+  (`immutable`). If it happens, purge the URL or ship under a new filename.
 - `site/install.sh` is the `curl -fsSL https://downbar.app/install | sh`
   installer (`/install` is a 200 rewrite in `site/_redirects`). It installs
   from `/dl/latest`, so it needs **no** per-release bump.
