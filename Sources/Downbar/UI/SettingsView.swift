@@ -352,12 +352,25 @@ private struct ComponentPicker: View {
                     LazyVStack(alignment: .leading, spacing: 0) {
                         ForEach(shown) { section in
                             if !section.title.isEmpty {
-                                Text(section.title)
-                                    .font(.system(size: 11, weight: .semibold))
-                                    .foregroundStyle(.secondary)
-                                    .padding(.horizontal, 14)
-                                    .padding(.top, 10)
-                                    .padding(.bottom, 3)
+                                let ids = section.items.map(\.id)
+                                let allOn = ids.allSatisfy(selected.contains)
+                                HStack {
+                                    Text(section.title)
+                                        .font(.system(size: 11, weight: .semibold))
+                                        .foregroundStyle(.secondary)
+                                    Spacer()
+                                    Button(allOn ? "Deselect all" : "Select all") {
+                                        setAll(ids, !allOn)
+                                    }
+                                    .buttonStyle(.plain)
+                                    .font(.system(size: 11))
+                                    .foregroundStyle(.tint)
+                                    .accessibilityLabel(allOn ? "Deselect all in \(section.title)"
+                                                              : "Select all in \(section.title)")
+                                }
+                                .padding(.horizontal, 14)
+                                .padding(.top, 10)
+                                .padding(.bottom, 3)
                             }
                             ForEach(section.items) { component in
                                 CheckRow(title: component.name,
@@ -415,6 +428,13 @@ private struct ComponentPicker: View {
 
     private func toggle(_ id: String) {
         if selected.contains(id) { selected.remove(id) } else { selected.insert(id) }
+        save()
+    }
+
+    /// Selects or clears every listed item in a group (only the ones matching
+    /// the current search).
+    private func setAll(_ ids: [String], _ on: Bool) {
+        if on { selected.formUnion(ids) } else { selected.subtract(ids) }
         save()
     }
 
