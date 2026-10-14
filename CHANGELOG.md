@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Component filter for Statuspage.io services: the funnel button on a
+  monitored row lists the page's components (grouped and searchable) so you
+  can watch, say, just Cloudflare's Sacramento (SMF) data center instead of
+  their whole global network. Status, incident title, and alerts then reflect
+  only the selected components. Stored as `components` (component IDs) in
+  `services.json`.
+
 ## [1.0.2] - 2026-09-29
 
 ### Changed

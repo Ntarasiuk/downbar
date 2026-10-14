@@ -71,6 +71,16 @@ final class ServiceStoreTests: XCTestCase {
         XCTAssertTrue(text.contains("https://www.githubstatus.com"), "Slashes should not be escaped")
     }
 
+    func testComponentFilterRoundTrips() throws {
+        let services = [Service(name: "Cloudflare", url: URL(string: "https://www.cloudflarestatus.com")!,
+                                components: ["2k1qvzk3763q"])]
+        store.save(services)
+        XCTAssertEqual(store.load(), services)
+        // Unfiltered services don't grow a `components` key.
+        store.save([Service(name: "GitHub", url: URL(string: "https://www.githubstatus.com")!)])
+        XCTAssertFalse(try String(contentsOf: store.fileURL, encoding: .utf8).contains("components"))
+    }
+
     func testEnsureOnDiskWritesOnceAndNeverOverwrites() throws {
         store.ensureOnDisk(ServiceStore.seed)
         XCTAssertTrue(FileManager.default.fileExists(atPath: store.fileURL.path))

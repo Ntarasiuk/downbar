@@ -20,6 +20,9 @@ account to create, no data leaving your Mac except the checks themselves.
   per category.
 - **Add any status page** — paste a Statuspage.io, Instatus, or plain website
   URL and Downbar monitors it too.
+- **Watch only the components you care about** — on any Statuspage.io service,
+  pick specific components (e.g. the Cloudflare data center your users hit)
+  and Downbar ignores outages everywhere else on that page.
 - **Native notifications** on down *and* recovery, with transient-blip
   de-flapping so a momentary unreachable reading doesn't spam alerts.
 - **Multiple status formats** — Statuspage.io, Instatus, plain website reach

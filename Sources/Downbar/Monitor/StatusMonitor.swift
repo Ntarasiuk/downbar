@@ -125,6 +125,8 @@ final class StatusMonitor: ObservableObject {
         }
 
         for r in fetched {
+            guard let service = snapshot.first(where: { $0.id == r.serviceID }),
+                  isCurrent(service) else { continue }
             let old = lastKnownIndicator[r.serviceID]
             results[r.serviceID] = r
             // An unreachable reading isn't a real health change — keep the last
@@ -134,7 +136,7 @@ final class StatusMonitor: ObservableObject {
             history.append(serviceID: r.serviceID, indicator: r.indicator, at: r.lastChecked)
             // Only notify after we have a prior known reading, so initial states
             // are silent.
-            if let old, let service = snapshot.first(where: { $0.id == r.serviceID }) {
+            if let old {
                 notifyIfChanged(service, from: old, to: r)
             }
             lastKnownIndicator[r.serviceID] = r.indicator
@@ -273,6 +275,18 @@ final class StatusMonitor: ObservableObject {
         persist()
     }
 
+    /// Narrows a Statuspage service to specific components (nil/empty = whole page).
+    func setComponents(_ ids: [String]?, for service: Service) {
+        guard let idx = services.firstIndex(where: { $0.id == service.id }) else { return }
+        services[idx].components = (ids?.isEmpty ?? true) ? nil : ids
+        // The old reading measured a different set of components; comparing
+        // against it would fire a false "down" or "recovered" alert.
+        lastKnownIndicator[service.id] = nil
+        persist()
+        let updated = services[idx]
+        Task { await refreshOne(updated) }
+    }
+
     func move(from source: IndexSet, to destination: Int) {
         services.move(fromOffsets: source, toOffset: destination)
         persist()
@@ -318,7 +332,15 @@ final class StatusMonitor: ObservableObject {
 
     private func refreshOne(_ service: Service) async {
         let r = await Self.fetchWithRetry(service)
+        guard isCurrent(service) else { return }
         results[r.serviceID] = r
+    }
+
+    /// Whether `service` is still monitored with the same component filter. A
+    /// fetch can take seconds (retry included); if the filter changed while it
+    /// ran, its reading is for the wrong components and must be dropped.
+    private func isCurrent(_ service: Service) -> Bool {
+        services.first { $0.id == service.id }?.components == service.components
     }
 
     /// Fetches a service, retrying once after a short delay if the first read is

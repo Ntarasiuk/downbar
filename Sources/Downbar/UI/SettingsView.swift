@@ -122,6 +122,7 @@ private struct ServicesTab: View {
 /// Rounded search field matching the macOS settings aesthetic.
 private struct SearchField: View {
     @Binding var text: String
+    var prompt = String(localized: "Search services")
 
     var body: some View {
         HStack(spacing: 6) {
@@ -129,10 +130,10 @@ private struct SearchField: View {
                 .font(.system(size: 12))
                 .foregroundStyle(.secondary)
                 .accessibilityHidden(true)
-            TextField("Search services", text: $text)
+            TextField(prompt, text: $text)
                 .textFieldStyle(.plain)
                 .font(.system(size: 13))
-                .accessibilityLabel("Search services")
+                .accessibilityLabel(prompt)
             if !text.isEmpty {
                 Button { text = "" } label: {
                     Image(systemName: "xmark.circle.fill")
@@ -203,9 +204,10 @@ private struct CatalogRow: View {
                     Text(entry.name).font(.system(size: 13))
                     Text(entry.host).font(.system(size: 10)).foregroundStyle(.secondary)
                 }
-                if let id = monitored?.id {
+                if let monitored {
                     Spacer()
-                    MuteButton(serviceID: id)
+                    ComponentsButton(monitor: monitor, service: monitored)
+                    MuteButton(serviceID: monitored.id)
                 }
             }
         }
@@ -264,9 +266,180 @@ private struct CustomRow: View {
                     .font(.system(size: 10)).foregroundStyle(.secondary)
             }
             Spacer()
+            ComponentsButton(monitor: monitor, service: service)
             MuteButton(serviceID: service.id)
             RemoveButton(monitor: monitor, service: service)
         }
+    }
+}
+
+/// Funnel button on Statuspage rows that narrows the service to specific
+/// components (e.g. the Cloudflare data center your users hit). Filled while a
+/// filter is active.
+private struct ComponentsButton: View {
+    let monitor: StatusMonitor
+    let service: Service
+    @State private var showing = false
+
+    var body: some View {
+        if service.provider == .statuspage {
+            let count = service.components?.count ?? 0
+            Button {
+                showing = true
+            } label: {
+                Image(systemName: count > 0
+                      ? "line.3.horizontal.decrease.circle.fill"
+                      : "line.3.horizontal.decrease.circle")
+                    .font(.system(size: 11))
+            }
+            .buttonStyle(.borderless)
+            .foregroundStyle(count > 0 ? AnyShapeStyle(.tint) : AnyShapeStyle(.secondary))
+            .help(count == 0 ? "Watch specific components"
+                  : count == 1 ? "Watching 1 component" : "Watching \(count) components")
+            .accessibilityLabel("Choose components for \(service.name)")
+            .popover(isPresented: $showing, arrowEdge: .bottom) {
+                ComponentPicker(monitor: monitor, service: service)
+            }
+        }
+    }
+}
+
+/// Searchable checklist of a Statuspage's components, grouped as the page
+/// groups them. An empty selection means the whole page.
+private struct ComponentPicker: View {
+    /// Plain `let`: the picker only writes to the monitor. Observing it would
+    /// re-render every row each time a poll publishes new results.
+    let monitor: StatusMonitor
+    let service: Service
+    @State private var all: [StatuspageProvider.Component]?
+    /// `sections(all)` cached; recomputed only when the list loads or the search changes.
+    @State private var shown: [Section] = []
+    @State private var error: String?
+    @State private var selected: Set<String>
+    @State private var search = ""
+
+    init(monitor: StatusMonitor, service: Service) {
+        self.monitor = monitor
+        self.service = service
+        _selected = State(initialValue: Set(service.components ?? []))
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            HStack {
+                Text("\(service.name) Components")
+                    .font(.system(size: 13, weight: .semibold))
+                Spacer()
+                Button("Monitor all") {
+                    selected = []
+                    save()
+                }
+                .buttonStyle(.plain)
+                .font(.system(size: 11))
+                .foregroundStyle(.tint)
+                .disabled(selected.isEmpty)
+            }
+            .padding(.horizontal, 14)
+            .padding(.top, 11)
+            SearchField(text: $search, prompt: String(localized: "Search components"))
+                .padding(.horizontal, 14)
+                .padding(.vertical, 8)
+
+            Divider()
+
+            if all != nil {
+                ScrollView {
+                    LazyVStack(alignment: .leading, spacing: 0) {
+                        ForEach(shown) { section in
+                            if !section.title.isEmpty {
+                                let ids = section.items.map(\.id)
+                                let allOn = ids.allSatisfy(selected.contains)
+                                HStack {
+                                    Text(section.title)
+                                        .font(.system(size: 11, weight: .semibold))
+                                        .foregroundStyle(.secondary)
+                                    Spacer()
+                                    Button(allOn ? "Deselect all" : "Select all") {
+                                        setAll(ids, !allOn)
+                                    }
+                                    .buttonStyle(.plain)
+                                    .font(.system(size: 11))
+                                    .foregroundStyle(.tint)
+                                    .accessibilityLabel(allOn ? "Deselect all in \(section.title)"
+                                                              : "Select all in \(section.title)")
+                                }
+                                .padding(.horizontal, 14)
+                                .padding(.top, 10)
+                                .padding(.bottom, 3)
+                            }
+                            ForEach(section.items) { component in
+                                CheckRow(title: component.name,
+                                         isOn: selected.contains(component.id)) {
+                                    toggle(component.id)
+                                }
+                            }
+                        }
+                    }
+                    .padding(.bottom, 8)
+                }
+            } else {
+                Group {
+                    if let error {
+                        Text(error).font(.system(size: 11)).foregroundStyle(.red)
+                    } else {
+                        ProgressView().controlSize(.small)
+                    }
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+            }
+        }
+        .frame(width: 320, height: 420)
+        .onChange(of: search) {
+            if let all { shown = sections(all) }
+        }
+        .task {
+            do {
+                let loaded = try await StatuspageProvider.fetchComponents(service.url)
+                all = loaded
+                shown = sections(loaded)
+            } catch {
+                self.error = error.localizedDescription
+            }
+        }
+    }
+
+    /// Keyed by group ID, since two groups can share a name.
+    struct Section: Identifiable {
+        let id: String
+        let title: String
+        let items: [StatuspageProvider.Component]
+    }
+
+    /// Top-level components first (untitled), then each group's children
+    /// under the group's name, filtered by the search text.
+    private func sections(_ all: [StatuspageProvider.Component]) -> [Section] {
+        let q = search.lowercased()
+        let matches = all.filter { $0.group != true && (q.isEmpty || $0.name.lowercased().contains(q)) }
+        let groups = all.filter { $0.group == true }
+        let top = Section(id: "", title: "", items: matches.filter { $0.groupID == nil })
+        return ([top] + groups.map { g in Section(id: g.id, title: g.name, items: matches.filter { $0.groupID == g.id }) })
+            .filter { !$0.items.isEmpty }
+    }
+
+    private func toggle(_ id: String) {
+        if selected.contains(id) { selected.remove(id) } else { selected.insert(id) }
+        save()
+    }
+
+    /// Selects or clears every listed item in a group (only the ones matching
+    /// the current search).
+    private func setAll(_ ids: [String], _ on: Bool) {
+        if on { selected.formUnion(ids) } else { selected.subtract(ids) }
+        save()
+    }
+
+    private func save() {
+        monitor.setComponents(selected.sorted(), for: service)
     }
 }
 
@@ -303,6 +476,7 @@ private struct ReorderRow: View {
                 .accessibilityHidden(true)
             Text(service.name).font(.system(size: 13))
             Spacer()
+            ComponentsButton(monitor: monitor, service: service)
             MuteButton(serviceID: service.id)
             RemoveButton(monitor: monitor, service: service)
             Image(systemName: "line.3.horizontal")
@@ -584,8 +758,8 @@ private struct AWSRegionPicker: View {
                             .padding(.bottom, 3)
 
                         ForEach(group.regions, id: \.code) { region in
-                            RegionRow(region: region,
-                                      isOn: selected.contains(region.code)) {
+                            CheckRow(title: region.code, detail: region.name,
+                                     isOn: selected.contains(region.code)) {
                                 toggle(region.code)
                             }
                         }
@@ -603,10 +777,11 @@ private struct AWSRegionPicker: View {
     }
 }
 
-/// One tappable region row with a checkmark; the popover stays open so several
-/// can be selected in a row.
-private struct RegionRow: View {
-    let region: AWSRegionFilter.Region
+/// One tappable checklist row; the popover stays open so several can be
+/// selected in a row.
+private struct CheckRow: View {
+    let title: String
+    var detail: String? = nil
     let isOn: Bool
     let toggle: () -> Void
     @State private var hovering = false
@@ -618,11 +793,13 @@ private struct RegionRow: View {
                     .foregroundStyle(isOn ? AnyShapeStyle(.tint) : AnyShapeStyle(.secondary))
                     .font(.system(size: 13))
                     .accessibilityHidden(true)
-                Text(region.code)
+                Text(title)
                     .font(.system(size: 12, weight: .medium))
-                Text(region.name)
-                    .font(.system(size: 11))
-                    .foregroundStyle(.secondary)
+                if let detail {
+                    Text(detail)
+                        .font(.system(size: 11))
+                        .foregroundStyle(.secondary)
+                }
                 Spacer()
             }
             .padding(.horizontal, 14)
@@ -632,7 +809,7 @@ private struct RegionRow: View {
         }
         .buttonStyle(.plain)
         .onHover { hovering = $0 }
-        .accessibilityLabel("\(region.code), \(region.name)")
+        .accessibilityLabel(detail.map { "\(title), \($0)" } ?? title)
         .accessibilityValue(isOn ? "Selected" : "Not selected")
         .accessibilityAddTraits(isOn ? .isSelected : [])
     }
