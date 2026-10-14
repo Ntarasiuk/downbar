@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-10-14
+
 ### Added
 - Component filter for Statuspage.io services: the funnel button on a
   monitored row lists the page's components (grouped and searchable) so you
@@ -59,6 +61,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - First-launch onboarding to pick the services you care about.
 - App Store packaging as a $2.99 LSUIElement menu-bar app (macOS 14+).
 
-[Unreleased]: https://github.com/Ntarasiuk/downbar/compare/v1.0.1...HEAD
+[Unreleased]: https://github.com/Ntarasiuk/downbar/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/Ntarasiuk/downbar/compare/v1.0.2...v1.1.0
+[1.0.2]: https://github.com/Ntarasiuk/downbar/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/Ntarasiuk/downbar/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/Ntarasiuk/downbar/releases/tag/v1.0.0
